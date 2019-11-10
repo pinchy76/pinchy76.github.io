@@ -1,0 +1,231 @@
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// XER loading functions
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+function saveTextAsFile() {
+    const textToSave = document.getElementById("inputTextToSave").value;
+    const textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
+    const textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    const fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs")
+      .value;
+    const downloadLink = document.createElement("a");
+  
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+  
+    downloadLink.click();
+  }
+  
+  function destroyClickedElement(event) {
+    document.body.removeChild(event.target);
+  }
+  
+  function loadFileAsText() {
+    // Check for the various File API support.
+    //if (window.File && window.FileReader && window.FileList && window.Blob) {
+    if (window.File && window.FileReader) {
+      // Great success! All the File APIs are supported.
+    } else {
+      alert(`The File APIs are not fully supported in this browser.`);
+    }
+  
+    var fileToLoad = document.getElementById("filePicker").files[0];
+  
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent) {
+      var textFromFileLoaded = fileLoadedEvent.target.result;
+      document.getElementById("inputTextToSave").value = textFromFileLoaded;
+    };
+    fileReader.readAsText(fileToLoad, "UTF-8");
+  }
+  
+  function printLoadedText() {
+    const loadedText = document.getElementById("inputTextToSave").value;
+    console.log(loadedText);
+  }
+  
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  // XER text parsing functions
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  
+  function xerParser() {
+    // create dictionary from XER with key values of table names and table contents
+    const xerHeader = document
+      .getElementById("inputTextToSave")
+      .value.substring(
+        1,
+        document.getElementById("inputTextToSave").value.search(`%T`)
+      );
+    //console.log(document.getElementById("inputTextToSave").value);
+    const xerDictionary = arrayTablesFromXER(
+      document.getElementById("inputTextToSave").value
+    );
+    const strTagValue = document.getElementById("inputTagValue").value;
+  
+    const arrJunkTablesToClear = [`POBS`, `RISKTYPES`];
+    const arrOtherTablesToClear = [
+      `APPLYACTOPTIONS`,
+      `DOCCATG`,
+      `DOCUMENT`,
+      `LOCATION`,
+      `MEMOTYPE`,
+      `NONWORK`,
+      `PCATTYPE`,
+      `PCATVAL`,
+      `PHASE`,
+      `PROJTHRS`,
+      `PROJPCAT`,
+      `PROJISSU`,
+      `ROLERATE`,
+      `TASKDOC`,
+      `TASKMEMO`,
+      `TASKNOTE`,
+      `WBSBUDG`,
+      `WBSMEMO`,
+      `WBSSTEP`
+    ];
+    const arrUDFTablesToClear = [`UDFVALUE`, `UDFTYPE`];
+    const arrTagTables = [
+      [`CALENDAR`, `clndr_name`],
+      [`ROLES`, `role_short_name`],
+      [`RSRC`, `rsrc_short_name`],
+      [`RSRCCURVDATA`, `curv_name`],
+      [`RSRCROLE`, `rsrc_short_name`],
+      [`PROJECT`, `proj_short_name`],
+      [`RCATVAL`, `rsrc_catg_short_name`],
+      [`ACTVTYPE`, `actv_code_type`]
+    ];
+  
+        for (let i = 0; i < arrOtherTablesToClear.length; i++)
+        {
+            clearTable(xerDictionary,arrOtherTablesToClear[i]);
+        }
+  
+        for (let i = 0; i < arrUDFTablesToClear.length; i++)
+        {
+            clearTable(xerDictionary,arrUDFTablesToClear[i]);
+    }
+    //	console.log (arrTagTables.length);
+    for (let i = 0; i < arrTagTables.length; i++) {
+      let tbl0 = arrTagTables[i][0];
+      let tbl1 = arrTagTables[i][1];
+      
+      try{
+          xerDictionary.set(tbl0,tagXERTable(xerDictionary.get(tbl0),tbl1,strTagValue));
+      }	catch(err){}
+    }
+  
+    var strNewXER = xerHeader;
+    
+    for (const v of xerDictionary.values()) {
+      //console.log(v);
+      strNewXER += v
+        }
+    
+    if (strNewXER.substring(strNewXER.length - 2, strNewXER.length) != '%E' ){
+      strNewXER += '%E';
+    }
+  console.log(strNewXER);
+  } 
+  
+  
+  
+  //function logMapElements(value, key, map) {
+  //	console.log(`m[${key}] = ${value}`);
+  //  }
+  
+  function clearTable(dictionary, tableName) {
+    //clear table
+    try {
+      dictionary.set(tableName, ``);
+    } catch (err) {}
+  }
+  
+  
+  
+  function arrayTablesFromXER(xerText) {
+    //passes XER in and creates a key/value Map with key as table name and value as the SQL of the table element from %T to last %R
+    const loadedText = document.getElementById("inputTextToSave").value;
+    const strTableDelimiter = `%T`;
+    const arrXERTables = loadedText.split(strTableDelimiter);
+    const dict = new Map(); //new Object();  //create `dictionary` object
+  
+    for (let i = 1; i < 10; i++) {
+      let strTableName = arrXERTables[i]
+        .substring(1, arrXERTables[i].search("%F"))
+        .trim();
+  
+      let strTableData = strTableDelimiter + arrXERTables[i];
+      dict.set(strTableName, strTableData);
+    }
+  
+    return dict;
+  }
+  
+  function tagXERTable(strTableData, strFieldToTag, strTagText) {
+    //function which tags a field in a table (passed in as a string) with a string provided then returns the changed table string
+  
+    //vars for delimeter characters
+    const newLine = "\n";
+    const strTab = "\t";
+  
+    //create arrRows array by splitting table data by newline character
+    const arrTableSplitIntoRows = strTableData.split(newLine);
+  
+    //create output string and populate it with top row of table (arrRows[0])
+    let strOutput = arrTableSplitIntoRows[0];
+  
+    //create array for
+    let arrTableRowsSplitIntoColumns = [];
+  
+    //loop through arrTableRows array and push each row onto array
+    //arrTableColumns split by tab character
+    //start at 1 as top row not required
+    for (let l = 1; l < arrTableSplitIntoRows.length; l++) {
+      arrTableRowsSplitIntoColumns.push(
+        l,
+        arrTableSplitIntoRows[l].split(strTab)
+      );
+    }
+  
+    //Start of return string - top two rows of table
+    strOutput =
+      strOutput +
+      newLine +
+      arrTableRowsSplitIntoColumns[1].join(strTab) +
+      newLine;
+  
+    //Find Column to Tag in top row of arrTableColumns array
+    const iColumnToTag = arrTableRowsSplitIntoColumns[1].indexOf(strFieldToTag);
+  
+    //loop through each of the split row arrays
+    for (let l = 2; l < arrTableRowsSplitIntoColumns.length - 1; l++) {
+      //assign current row to array
+      let arrCurrentRowCellsArray = arrTableRowsSplitIntoColumns[l];
+  
+      //change the value in the column to tag
+      arrCurrentRowCellsArray[iColumnToTag] =
+        strTagText + "_" + arrCurrentRowCellsArray[iColumnToTag];
+  
+      //loop through row cells and add them to string separated by tabs
+      //(can`t get array join to work)
+      for (let x = 0; x < arrCurrentRowCellsArray.length; x++) {
+        if (x + 1 == arrCurrentRowCellsArray.length) {
+          strOutput = strOutput + arrCurrentRowCellsArray[x] + newLine;
+        } else {
+          strOutput = strOutput + arrCurrentRowCellsArray[x] + strTab;
+        }
+      }
+  
+      //strOutput = strOutput + strTab;
+  
+      //strOutput = strOutput  +  (arrCurrentRowCellsArray.join(strTab));
+    }
+  
+    return strOutput;
+  }
+  
