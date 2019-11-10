@@ -66,6 +66,7 @@
       
       try{
           xerDictionary.set(tbl0,tagXERTable(xerDictionary.get(tbl0),tbl1,strTagValue));
+      // eslint-disable-next-line no-empty
       }	catch(err){}
     }
   
@@ -92,6 +93,7 @@
     //clear table
     try {
       dictionary.set(tableName, ``);
+    // eslint-disable-next-line no-empty
     } catch (err) {}
   }
   

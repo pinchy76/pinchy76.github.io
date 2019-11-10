@@ -22,6 +22,10 @@
     "url": "https://github.com/pinchy76/pinchy76.github.io/issues"
   },
   "homepage": "https://github.com/pinchy76/pinchy76.github.io#readme",
-  
-  "jshint.options": { "esversion": 6 }
+  "jshint.options": {
+    "esversion": 6
+  },
+  "ESLint.lintTask.options": {
+    "esversion": 6
+  }
 }
