@@ -99,6 +99,7 @@ h2 {
 	display: block;
 	  font-family: inherit; 
 	  font-size: inherit;
+	align-content: middle;
 	font-weight: 600;
 	margin-bottom: 1rem;
 	outline: none;
@@ -227,7 +228,7 @@ nav.main-nav a {
 #mainBody {
 	max-width: 600px; /*600px*/
 	margin: 0 auto;
-	padding: 00px 40px 20px 40px;
+	padding: 00px 40px 00px 40px;
   }
 
 #mainBody #XER-Cleaner{
@@ -241,6 +242,10 @@ textarea {
 	outline: none;
 	font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 	font-size: inherit; 
+
+	@media only screen and (max-width: 640px) {
+		width: 100%;
+	}
 }
 
 table {
