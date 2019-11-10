@@ -229,6 +229,11 @@ nav.main-nav a {
 	max-width: 600px; /*600px*/
 	margin: 0 auto;
 	padding: 00px 40px 00px 40px;
+
+	@media only screen and (max-width: 600px) {
+		nav.main-nav {
+			padding: 20px 15px 0;
+		}
   }
 
 #mainBody #XER-Cleaner{
