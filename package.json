@@ -1,0 +1,27 @@
+{
+  "name": "pinchy76.github.io",
+  "version": "1.0.0",
+  "description": "## About My website - featuring a javascript to 'clean' Oracle Primavera XERs. Very much in development and not ready for use yet.  But feel free to look around if you stumble here somehow. Steve",
+  "main": "index.js",
+  "dependencies": {
+    "jshint": "^2.10.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pinchy76/pinchy76.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pinchy76/pinchy76.github.io/issues"
+  },
+  "homepage": "https://github.com/pinchy76/pinchy76.github.io#readme",
+  
+  "jshint.options": { "esversion": 6 }
+}

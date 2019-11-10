@@ -4,24 +4,24 @@ title: XER Cleaner
 
 custom_css: 
 custom_js:
-- parse
+- xerCleaner/processXERtextFile
+- xerCleaner/parseXER_main
 ---
 
 <div id="XER-Cleaner">
     <h1>Oracle Primavera P6 XER Cleansing Tool</h1>
     <h2>A tool for cleaning junk data from Oracle Primavera P6 XER import files.  Click below for more details.</h2>
-
-
-                <input type="file" accept=".xer,.Xer,.XER" multiple=false id="filePicker" class="inputfile"/>
-                <label for="filePicker" >Click here to choose an XER to clean</label>
+    
+    <input type="file" accept=".xer,.Xer,.XER" multiple=false id="filePicker" class="inputfile"/>
+    <label for="filePicker" >Click here to choose an XER to clean</label>
 
     <textarea class="Text_AREA" placeholder="XER will import to here" id="inputTextToSave"  rows="25" wrap='off'></textarea>
+    
     <table>        
 
         <tr>
             <td>Value to tag fields with:</td>
             <td><input id="inputTagValue"></input></td>
-
         </tr>    
         <tr>
             <td>Filename to Save As:</td>
@@ -34,5 +34,6 @@ custom_js:
             <td></td>
             <td><button onclick="xerParser()">Console log loaded text</button><td>
         </tr>
+
     </table>
 </div>

@@ -1,56 +1,6 @@
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// XER loading functions
+// XER text parsing functions
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-function saveTextAsFile() {
-    const textToSave = document.getElementById("inputTextToSave").value;
-    const textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
-    const textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
-    const fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs")
-      .value;
-    const downloadLink = document.createElement("a");
-  
-    downloadLink.download = fileNameToSaveAs;
-    downloadLink.innerHTML = "Download File";
-    downloadLink.href = textToSaveAsURL;
-    downloadLink.onclick = destroyClickedElement;
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
-  
-    downloadLink.click();
-  }
-  
-  function destroyClickedElement(event) {
-    document.body.removeChild(event.target);
-  }
-  
-  function loadFileAsText() {
-    // Check for the various File API support.
-    //if (window.File && window.FileReader && window.FileList && window.Blob) {
-    if (window.File && window.FileReader) {
-      // Great success! All the File APIs are supported.
-    } else {
-      alert(`The File APIs are not fully supported in this browser.`);
-    }
-  
-    var fileToLoad = document.getElementById("filePicker").files[0];
-  
-    var fileReader = new FileReader();
-    fileReader.onload = function(fileLoadedEvent) {
-      var textFromFileLoaded = fileLoadedEvent.target.result;
-      document.getElementById("inputTextToSave").value = textFromFileLoaded;
-    };
-    fileReader.readAsText(fileToLoad, "UTF-8");
-  }
-  
-  function printLoadedText() {
-    const loadedText = document.getElementById("inputTextToSave").value;
-    console.log(loadedText);
-  }
-  
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  // XER text parsing functions
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   
   function xerParser() {
     // create dictionary from XER with key values of table names and table contents
@@ -123,7 +73,7 @@ function saveTextAsFile() {
     
     for (const v of xerDictionary.values()) {
       //console.log(v);
-      strNewXER += v
+      strNewXER += v;
         }
     
     if (strNewXER.substring(strNewXER.length - 2, strNewXER.length) != '%E' ){
