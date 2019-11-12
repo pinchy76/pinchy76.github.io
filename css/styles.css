@@ -234,12 +234,9 @@ nav.main-nav a {
 		nav.main-nav {
 			padding: 20px 15px 0;
 		}
-  }
-
-#mainBody #XER-Cleaner{
-	display: inline-block;
-}
-
+	  }
+	}
+	
 textarea { 
 	width: 600px;
 	white-space: pre;
@@ -271,7 +268,7 @@ table td,td {
 	border-spacing: none;
 	border-style: solid;
 	padding: 10px 15px;
-	border-width: 0 0 0 0;
+	border-width: 10 0 0 0;
 }
 
 tr:nth-child(odd)>td {
@@ -289,7 +286,23 @@ thead th,th {
 	white-space: nowrap;
 }
 
+.control-panel{
+	padding: 20px 40px 20px 40px;
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	background: #fff;
+	border-bottom-color: #000;
+	border-bottom-width: 10px ;
+}
 
+.control-panel-element{
+	padding: 60px 100px 60px 100px;
+	max-width: 600px;
+	height: 30px;
+	margin: 0 auto;
+	background: #fff;
+}
 
 img {
 	width: 100%;

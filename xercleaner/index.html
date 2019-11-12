@@ -17,12 +17,42 @@ custom_js:
 
     <textarea class="Text_AREA" placeholder="XER will import to here" id="inputTextToSave"  rows="25" wrap='off'></textarea>
     
+    <table class="control-panel">
+        <tr class="control-panel-element" >
+            <td>Clean Junk Tables (POBS, RISKTYPES)?</td>
+            <td></td>
+            <td><input type="checkbox" name="clearPOBS" checked="checked" id="chk-Clear-Junk"></input></td>
+        </tr>
+        <tr class="control-panel-element" >
+            <td>Clean User Defined Fields?</td>
+            <td></td>
+            <td><input type="checkbox" name="clearUDFs" checked="checked" id="chk-Clear-UDF"></input></td>
+        </tr>
+        <tr class="control-panel-element" >
+            <td>Clean Other unneeded tables?</td>
+            <td></td>
+            <td><input type="checkbox" name="clearOtherTables" checked="checked" id="chk-Clear-Other"></input></td>
+        </tr>
+        <tr class="control-panel-element" >
+            <td>Add tag to table fields?</td>
+            <td><input id="inputTagValue"></input></td>
+            <td><input type="checkbox" name="addTags" checked="checked" ></input></td>
+        </tr>
+        <tr class="control-panel-element" >
+            <td>Filename to Save As:</td>
+            <td><input id="inputFileNameToSaveAs"></input></td>
+            <td><button onclick="saveTextAsFile()">Save Text to File</button></td>
+        </tr>
+
+        <tr class="control-panel-element" >
+            <td>Print loaded text</td>
+            <td></td>
+            <td><button onclick="xerParser()">Console log loaded text</button><td>
+        </tr>
+    </table>
     <table>        
 
-        <tr>
-            <td>Value to tag fields with:</td>
-            <td><input id="inputTagValue"></input></td>
-        </tr>    
+  
         <tr>
             <td>Filename to Save As:</td>
             <td><input id="inputFileNameToSaveAs"></input></td>
