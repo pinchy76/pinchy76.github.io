@@ -6,14 +6,16 @@ custom_css:
 custom_js:
 - xerCleaner/processXERtextFile
 - xerCleaner/parseXER_main
+- jquery/jQuery-3.4.1
 ---
+
 
 <div id="XER-Cleaner">
     <h1>Oracle Primavera P6 XER Cleansing Tool</h1>
-    <h2>A tool for cleaning junk data from Oracle Primavera P6 XER import files.  Click below for more details.</h2>
+    <h2>A tool for cleaning junk data from Oracle Primavera P6 XER import files.  Click below for more details!</h2>
     
-    <input type="file" accept=".xer,.Xer,.XER" multiple=false id="filePicker" class="inputfile"/>
-    <label for="filePicker" >Click here to choose an XER to clean</label>
+    <input type="file" accept=".xer,.Xer,.XER" multiple=false id="filePicker" class="inputfile" onchange="loadFileAsText()"/>
+    <label for="filePicker" id="click-filepicker">Click here to choose an XER to clean  </label>
 
     <textarea class="Text_AREA" placeholder="XER will import to here" id="inputTextToSave"  rows="25" wrap='off'></textarea>
     
@@ -41,7 +43,7 @@ custom_js:
         <tr class="control-panel-element" >
             <td>Filename to Save As:</td>
             <td><input id="inputFileNameToSaveAs"></input></td>
-            <td><button onclick="saveTextAsFile()">Save Text to File</button></td>
+            <td><button onclick="loadFileAsText()">Save Text to File</button></td>
         </tr>
 
         <tr class="control-panel-element" >
@@ -67,3 +69,6 @@ custom_js:
 
     </table>
 </div>
+
+
+

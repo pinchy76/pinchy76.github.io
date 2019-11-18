@@ -2,6 +2,7 @@
 // XER loading functions
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+
 function saveTextAsFile() {
     var textToSave = document.getElementById("inputTextToSave").value;
     var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
@@ -32,9 +33,9 @@ function saveTextAsFile() {
     } else {
       alert("The File APIs are not fully supported in this browser.");
     }
-  
+    
     var fileToLoad = document.getElementById("filePicker").files[0];
-  
+    
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent) {
       var textFromFileLoaded = fileLoadedEvent.target.result;
