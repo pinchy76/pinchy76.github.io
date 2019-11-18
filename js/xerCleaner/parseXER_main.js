@@ -51,7 +51,12 @@
       [`RCATVAL`, `rsrc_catg_short_name`],
       [`ACTVTYPE`, `actv_code_type`]
     ];
-  
+
+        for (let i = 0; i < arrJunkTablesToClear.length; i++)
+        {
+            clearTable(xerDictionary,arrJunkTablesToClear[i]);
+        }
+
         for (let i = 0; i < arrOtherTablesToClear.length; i++)
         {
             clearTable(xerDictionary,arrOtherTablesToClear[i]);
@@ -82,7 +87,7 @@
     if (strNewXER.substring(strNewXER.length - 2, strNewXER.length) != '%E' ){
       strNewXER += '%E';
     }
-  console.log(strNewXER);
+    document.getElementById("inputTextToSave").value = strNewXER;
   } 
   
   
@@ -108,7 +113,7 @@
     const arrXERTables = loadedText.split(strTableDelimiter);
     const dict = new Map(); //new Object();  //create `dictionary` object
   
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i < arrXERTables.length; i++) {
       let strTableName = arrXERTables[i]
         .substring(1, arrXERTables[i].search("%F"))
         .trim();
