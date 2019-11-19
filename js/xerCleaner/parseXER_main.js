@@ -4,7 +4,9 @@
 
 
 
+  // eslint-disable-next-line no-unused-vars
   function xerParser() {
+    
     // create dictionary from XER with key values of table names and table contents
     const xerHeader = document
       .getElementById("inputTextToSave")
@@ -12,71 +14,93 @@
         1,
         document.getElementById("inputTextToSave").value.search(`%T`)
       );
-    //console.log(document.getElementById("inputTextToSave").value);
+    
     const xerDictionary = arrayTablesFromXER(
       document.getElementById("inputTextToSave").value
     );
-    const strTagValue = document.getElementById("inputTagValue").value;
-  
-    const arrJunkTablesToClear = [`POBS`, `RISKTYPES`];
-    const arrOtherTablesToClear = [
-      `APPLYACTOPTIONS`,
-      `DOCCATG`,
-      `DOCUMENT`,
-      `LOCATION`,
-      `MEMOTYPE`,
-      `NONWORK`,
-      `PCATTYPE`,
-      `PCATVAL`,
-      `PHASE`,
-      `PROJTHRS`,
-      `PROJPCAT`,
-      `PROJISSU`,
-      `ROLERATE`,
-      `TASKDOC`,
-      `TASKMEMO`,
-      `TASKNOTE`,
-      `WBSBUDG`,
-      `WBSMEMO`,
-      `WBSSTEP`
-    ];
-    const arrUDFTablesToClear = [`UDFVALUE`, `UDFTYPE`];
-    const arrTagTables = [
-      [`CALENDAR`, `clndr_name`],
-      [`ROLES`, `role_short_name`],
-      [`RSRC`, `rsrc_short_name`],
-      [`RSRCCURVDATA`, `curv_name`],
-      [`RSRCROLE`, `rsrc_short_name`],
-      [`PROJECT`, `proj_short_name`],
-      [`RCATVAL`, `rsrc_catg_short_name`],
-      [`ACTVTYPE`, `actv_code_type`]
-    ];
+    
+    const blnChkClearJunk = document.getElementById("chk-Clear-Junk").value;
+    
+    //if clear junk is checked, wipe the tables in the array
+    if (blnChkClearJunk){
+      const arrJunkTablesToClear = [`POBS`, `RISKTYPES`];
 
-        for (let i = 0; i < arrJunkTablesToClear.length; i++)
+      for (let i = 0; i < arrJunkTablesToClear.length; i++)
         {
             clearTable(xerDictionary,arrJunkTablesToClear[i]);
         }
+    }
+    
+    //if clear UDF is checked, wipe the tables in the array
+    const blnChkClearUDF = document.getElementById("chk-Clear-UDF").value;
+    if (blnChkClearUDF){
+      const arrUDFTablesToClear = [`UDFVALUE`, `UDFTYPE`];
 
-        for (let i = 0; i < arrOtherTablesToClear.length; i++)
+      for (let i = 0; i < arrUDFTablesToClear.length; i++)
+        {
+            clearTable(xerDictionary,arrUDFTablesToClear[i]);
+        }
+    }
+    
+    //if clear other tables is checked, wipe the tables in the array
+    const blnChkClearOther = document.getElementById("chk-Clear-Other").value;
+    if (blnChkClearOther){
+      const arrOtherTablesToClear = [
+        `APPLYACTOPTIONS`,
+        `DOCCATG`,
+        `DOCUMENT`,
+        `LOCATION`,
+        `MEMOTYPE`,
+        `NONWORK`,
+        `PCATTYPE`,
+        `PCATVAL`,
+        `PHASE`,
+        `PROJTHRS`,
+        `PROJPCAT`,
+        `PROJISSU`,
+        `ROLERATE`,
+        `TASKDOC`,
+        `TASKMEMO`,
+        `TASKNOTE`,
+        `WBSBUDG`,
+        `WBSMEMO`,
+        `WBSSTEP`
+      ];
+
+      for (let i = 0; i < arrOtherTablesToClear.length; i++)
         {
             clearTable(xerDictionary,arrOtherTablesToClear[i]);
         }
-  
-        for (let i = 0; i < arrUDFTablesToClear.length; i++)
-        {
-            clearTable(xerDictionary,arrUDFTablesToClear[i]);
     }
-    //	console.log (arrTagTables.length);
-    for (let i = 0; i < arrTagTables.length; i++) {
-      let tbl0 = arrTagTables[i][0];
-      let tbl1 = arrTagTables[i][1];
+
+    //if Tag Tables is checked, add the tag
+    const blnTagTables = document.getElementById("chk-Tag-Tables").value;
+    if(blnTagTables){
+      const strTagValue = document.getElementById("inputTagValue").value;
+      const arrTagTables = [
+        [`CALENDAR`, `clndr_name`],
+        [`ROLES`, `role_short_name`],
+        [`RSRC`, `rsrc_short_name`],
+        [`RSRCCURVDATA`, `curv_name`],
+        [`RSRCROLE`, `rsrc_short_name`],
+        [`PROJECT`, `proj_short_name`],
+        [`RCATVAL`, `rsrc_catg_short_name`],
+        [`ACTVTYPE`, `actv_code_type`]
+      ];
       
-      try{
-          xerDictionary.set(tbl0,tagXERTable(xerDictionary.get(tbl0),tbl1,strTagValue));
-      // eslint-disable-next-line no-empty
-      }	catch(err){}
+      for (let i = 0; i < arrTagTables.length; i++) {
+        let tbl0 = arrTagTables[i][0];
+        let tbl1 = arrTagTables[i][1];
+        
+        try{
+            xerDictionary.set(tbl0,tagXERTable(xerDictionary.get(tbl0),tbl1,strTagValue));
+
+        // eslint-disable-next-line no-empty
+        }	catch(err){}
+      }
     }
-  
+    
+    
     var strNewXER = xerHeader;
     
     for (const v of xerDictionary.values()) {
@@ -90,12 +114,8 @@
     document.getElementById("inputTextToSave").value = strNewXER;
   } 
   
-  
-  
-  //function logMapElements(value, key, map) {
-  //	console.log(`m[${key}] = ${value}`);
-  //  }
-  
+
+  //Sets string passed in from dictionary to empty
   function clearTable(dictionary, tableName) {
     //clear table
     try {
@@ -106,6 +126,7 @@
   
   
   
+  // eslint-disable-next-line no-unused-vars
   function arrayTablesFromXER(xerText) {
     //passes XER in and creates a key/value Map with key as table name and value as the SQL of the table element from %T to last %R
     const loadedText = document.getElementById("inputTextToSave").value;
