@@ -229,13 +229,14 @@ nav.main-nav a {
 	max-width: 600px; /*600px*/
 	margin: 0 auto;
 	padding: 00px 40px 00px 40px;
+	}
 
 	@media only screen and (max-width: 600px) {
-		nav.main-nav {
+		#mainBody {
 			padding: 20px 15px 0;
 		}
-	  }
 	}
+
 	
 textarea { 
 	width: 600px;
