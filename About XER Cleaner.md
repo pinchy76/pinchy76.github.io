@@ -52,7 +52,16 @@ When reviewing a supplier's schedule a Planner will look at dates, sequences and
 **Wiping** these tables is optional but recommended.  If they are retained they are not tagged.
 
 **4. Remaining tables**
-The remaining tables are the essential tables for retaining functionality and schedule integrity.  They include the tables of tasks, WBS elements, calendars, roles and resources and activity codes.  These are either left as they are or otherwise **tagged**.  Project specific fields like activity IDs and task names don't need tags so aren't touched.  Roles, codes, resources and calendars are.
+The remaining tables are the essential tables for retaining functionality and schedule integrity.  They include the tables of tasks, WBS elements, calendars, roles and resources and activity codes.  These are either left as they are or otherwise **tagged**.  Project specific fields like activity IDs and task names don't need tags so aren't touched.  Roles, codes, resources and calendars are tagged.
+
+For a view of the tables that are wiped and tagged, please review the workflow document.
+
+## Software Architecture
+The XER cleaner is a browser based tool created in javascript.  All the operations are done in the browser window on the user's computer.  No XER data is uploaded to any servers.  This was a conscious decision at design stage to enable as many people to use the tool as possible.
+
+The tool is released as open source under the MIT license.  There are options for supporting the developer (if you'd like to) on the tools homepage.
+
+
 
 > Written with [StackEdit](https://stackedit.io/).
 
