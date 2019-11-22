@@ -40,7 +40,8 @@ date_format: "%B %-d, %Y"
 timezone: UTC
 markdown: kramdown
 highlighter: rouge
-permalink: /:year-:month-:day-:title/
+# permalink: /:year-:month-:day-:title/
+permalink: /blog/:categories/:year/:month/:day/:title.html
 #paginate: 5
 
 kramdown:
