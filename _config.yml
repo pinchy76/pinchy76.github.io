@@ -223,14 +223,17 @@ exclude:
   - README.md
   - screenshot.png
   - docs/
-  - vendor
+  - "vendor"
+  - "package.json"
+  - "README.md"
+  - "publish.sh"
   - vendor/bundle/
   - node_modules
   - vendor/bundle/
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
-  
+
 # Output options (more information on Jekyll's site)
 timezone: "Europe/London"
 markdown: kramdown
