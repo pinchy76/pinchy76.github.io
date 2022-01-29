@@ -231,6 +231,7 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - vendor/bundle/ruby/2.6.0/gems/jekyll-3.9.1/lib/site_template/_posts/0000-00-00-welcome-to-jekyll.markdown.erb
+  - srv/vendor/
 
 # Output options (more information on Jekyll's site)
 timezone: "Europe/London"
