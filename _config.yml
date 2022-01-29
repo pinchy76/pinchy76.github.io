@@ -6,7 +6,7 @@
 # --- Required options --- #
 
 # Name of website
-title: Stephen Pincher's Personal Website
+title: Stephen Pincher
 
 # Your name to show in the footer
 author: Stephen Pincher
@@ -20,6 +20,8 @@ navbar-links:
     - Twitter: "https://twitter.com/StephenPincher"
     - Github: "https://github.com/pinchy76"
   Author's home: "https://stephenpincher.com"
+  Projects:
+    - XER Cleaner: "https://stephenpincher.com/xercleaner"
 
 # --- Logo --- #
 
