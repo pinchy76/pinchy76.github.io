@@ -35,30 +35,8 @@ time, mark, audio, video {
 /* Base */
 html, body { height: 100%; }
 
-body {
-	margin: 0; 
-	font:16px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-	color: #666;
-	-webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
-}
-
-h1 {
-	font-size: 30px;
-	/* letter-spacing: -1px; */
-	color: #222;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-
-h2 {
-	font: 19px/1.3em Georgia,serif;
-	color: #bbb;
-	margin-bottom: 10px;
-}
-
 .button{
-	background: #515084;
+	background: #F05365;
 	border: none;
 	border-radius: 5px;
 	color: #fff;
@@ -75,7 +53,7 @@ h2 {
 	height:auto;
 	
 }
-.button:hover{background:#CB52FF}
+.button:hover{background:#ED3147}
 
 /* Input Type = filePicker */
 
@@ -91,7 +69,7 @@ h2 {
 [type="file"] + label {
 	
 	text-align: center;
-	background: #515084;
+	background: #F05365;
 	border: none;
 	border-radius: 5px;
 	color: #fff;
@@ -159,7 +137,7 @@ h2 {
 	font-weight: 600; /*400*/
 	letter-spacing: -2px; /*0px*/
 	font-size: 3em; /*20px*/
-	color: #515084;
+	color: #F05365;
 }
 
 @media only screen and (max-width: 640px) {
@@ -184,13 +162,7 @@ h2 {
     }
 }
 
-.pageHeader #header h3 {
-  font-size: 14px;
-  margin-top: 10px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-style: normal;
-  color: #808080;
-}
+
 
 /* Navigation Section------------------------------------------ */
 
