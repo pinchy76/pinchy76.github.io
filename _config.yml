@@ -14,12 +14,12 @@ author: Stephen Pincher
 # --- List of links in the navigation bar --- #
 
 navbar-links:
+  Home: "https://stephenpincher.com"
   About Me: "aboutme"
   Social:
     - LinkedIn: "https://www.linkedin.com/in/stephenpincher/"
     - Twitter: "https://twitter.com/StephenPincher"
     - Github: "https://github.com/pinchy76"
-  Author's home: "https://stephenpincher.com"
   Projects:
     - XER Cleaner: "https://stephenpincher.com/xercleaner"
 
