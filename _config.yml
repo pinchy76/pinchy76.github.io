@@ -233,7 +233,6 @@ exclude:
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
-  - /srv/vendor/
 
 # Output options (more information on Jekyll's site)
 timezone: "Europe/London"
