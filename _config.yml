@@ -250,6 +250,7 @@ exclude:
   - README.md
   - screenshot.png
   - docs/
+  - vendor
   - vendor/bundle/
   - node_modules
   - vendor/bundle/
