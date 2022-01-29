@@ -69,7 +69,7 @@ textarea {
 	outline: none;
 	font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 	font-size: inherit; 
-
+	width: 100%
 	@media only screen and (max-width: 640px) {
 		width: 100%;
 	}

@@ -11,7 +11,12 @@ title: XER Cleaner
 <div id="XER-Cleaner">
     <h1>Oracle Primavera P6 XER Cleansing Tool</h1>
     <h2>My tool for cleaning junk data from Oracle Primavera P6 XER import files.</h2>
-    
+    <br>
+    <div>If you import schedules into P6 you'll know that a lot of junk data can get pulled through into your database.<br>
+    A bug in database field called POBS in older versions of Primavera caused a flood of junk data to fill XERs.<br>
+More recently the RISKTYPES field also churns out junk.</div>
+<br>
+
     <input type="file" accept=".xer,.Xer,.XER" multiple=false id="filePicker" class="inputfile" onchange="loadFileAsText()"/>
     <label for="filePicker" id="click-filepicker">Click here to choose an XER to clean  </label>
 
