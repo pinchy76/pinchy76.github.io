@@ -213,7 +213,24 @@ date_format: "%B %-d, %Y"
 #fb_app_id: ""
 
 # --- You don't need to touch anything below here (but you can if you want) --- #
-
+# Exclude these files from production site
+exclude:
+  - CHANGELOG.md
+  - CNAME
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - screenshot.png
+  - docs/
+  - vendor
+  - vendor/bundle/
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  
 # Output options (more information on Jekyll's site)
 timezone: "Europe/London"
 markdown: kramdown
@@ -240,23 +257,7 @@ defaults:
     values:
       layout: "page"
 
-# Exclude these files from production site
-exclude:
-  - CHANGELOG.md
-  - CNAME
-  - Gemfile
-  - Gemfile.lock
-  - LICENSE
-  - README.md
-  - screenshot.png
-  - docs/
-  - vendor
-  - vendor/bundle/
-  - node_modules
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
+
 
 
 plugins:
