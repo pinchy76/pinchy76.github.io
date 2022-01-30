@@ -5,39 +5,83 @@ title: XER Cleaner
 ---
 
 <link rel="stylesheet" href="/assets/css/customforms.css">
+<link rel="stylesheet" href="/assets/css/toggle-radios.css">
 <script src="/assets/js/xerCleaner/processXERtextFile.js"></script>
 <script src="/assets/js/xerCleaner/parseXER_main.js"></script>
 
-<div id="XER-Cleaner">
     <h1>Oracle Primavera P6 XER Cleansing Tool</h1>
     <h2>My tool for cleaning junk data from Oracle Primavera P6 XER import files.</h2>
-    <br>
-    <div>If you import schedules into P6 you'll know that a lot of junk data can get pulled through into your database.<br>
+    <p>If you regularly import schedules into Primavera P6 you'll know that a lot of junk data can get pulled through into your database.<br>
+    "Junk" data can pollute your database, slowing it down and making it harder to navigate.<br>
     A bug in database field called POBS in older versions of Primavera caused a flood of junk data to fill XERs.<br>
-More recently the RISKTYPES field also churns out junk.</div>
-<br>
+    More recently the RISKTYPES field also churns out junk. JUNK</p>
+    <p>This utility will clean junk data tables like POBS and RISKTYPES.</p>
+    <p>It also gives the option to remove other fields from the import file.</p>
+    <p>There is also the option to tag data.  
+    This is useful if you import from multiple sources (eg. subcontractor schedules) because it allows you to add a tag so you can see whose calendars, activity codes etc. belong to which contractor.</p>
 
+<div class="control-panel">
     <input type="file" accept=".xer,.Xer,.XER" multiple=false id="filePicker" class="inputfile" onchange="loadFileAsText()"/>
     <label for="filePicker" id="click-filepicker">Click here to choose an XER to clean  </label>
+    <textarea class="Text_AREA" placeholder="XER will import to here" id="inputTextToSave"  rows="10" wrap='off'></textarea>
+</div>   
 
-    <textarea class="Text_AREA" placeholder="XER will import to here" id="inputTextToSave"  rows="25" wrap='off'></textarea>
-    
+<div class="control-panel" id="XER-Options">
+    <table class="control-panel-element">
+        <tr>
+            <td>
+                Junk Data Fields (POBS/RISKTYPES)
+            </td>
+            <td width="75%">
+                <div class="toggle-radio" data-style="rounded">
+                    <input type="radio" name="junkOption" id="default_Option1" value="Ignore">
+                    <label for="default_Option1">Ignore</label>
+                
+                    <input type="radio" name="junkOption" id="default_Option2" value="Tag" checked>
+                    <label for="default_Option2">Tag</label>
+                
+                    <input type="radio" name="junkOption" id="default_Option3" value="Remove">
+                    <label for="default_Option3">Remove</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                User Defined Fields
+            </td>
+            <td width="75%">
+                <div class="toggle-radio" data-style="rounded">
+                    <input type="radio" name="udfOption" id="default_Option1" value="Ignore">
+                    <label for="default_Option1">Ignore</label>
+                
+                    <input type="radio" name="udfOption" id="default_Option2" value="Tag" checked>
+                    <label for="default_Option2">Tag</label>
+                
+                    <input type="radio" name="udfOption" id="default_Option3" value="Remove">
+                    <label for="default_Option3">Remove</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Activity Codes
+            </td>
+            <td width="75%">
+                <div class="toggle-radio" data-style="rounded">
+                    <input type="radio" name="actCodeOption" id="default_Option1" value="Ignore">
+                    <label for="default_Option1">Ignore</label>
+                
+                    <input type="radio" name="actCodeOption" id="default_Option2" value="Tag" checked>
+                    <label for="default_Option2">Tag</label>
+                
+                    <input type="radio" name="actCodeOption" id="default_Option3" value="Remove">
+                    <label for="default_Option3">Remove</label>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
     <table class="control-panel">
-        <tr class="control-panel-element" >
-            <td>Clean Junk Tables (POBS, RISKTYPES)?</td>
-            <td></td>
-            <td><input type="checkbox" name="clearPOBS" checked="checked" id="chk-Clear-Junk"></input></td>
-        </tr>
-        <tr class="control-panel-element" >
-            <td>Clean User Defined Fields?</td>
-            <td></td>
-            <td><input type="checkbox" name="clearUDFs" checked="checked" id="chk-Clear-UDF"></input></td>
-        </tr>
-        <tr class="control-panel-element" >
-            <td>Clean Other unneeded tables?</td>
-            <td></td>
-            <td><input type="checkbox" name="clearOtherTables" checked="checked" id="chk-Clear-Other"></input></td>
-        </tr>
         <tr class="control-panel-element" >
             <td>Add tag to table fields?</td>
             <td><input id="inputTagValue"></input></td>
@@ -48,32 +92,26 @@ More recently the RISKTYPES field also churns out junk.</div>
             <td><input id="inputFileNameToSaveAs"></input></td>
             <td><button onclick="loadFileAsText()">Save Text to File</button></td>
         </tr>
-
         <tr class="control-panel-element" >
             <td>Print loaded text</td>
             <td></td>
             <td><button onclick="xerParser()">Run Parsr</button><td>
         </tr>
-    </table>
-    <table>        
-
-  
-        <tr>
+        <tr class="control-panel-element" >
             <td>Filename to Save As:</td>
             <td><input id="inputFileNameToSaveAs"></input></td>
             <td><button onclick="saveTextAsFile()">Save Text to File</button></td>
         </tr>
-
-        <tr>
+        <tr class="control-panel-element" >
             <td>Print loaded text</td>
             <td></td>
             <td><button onclick="xerParser()">Console log loaded text</button><td>
         </tr>
-
     </table>
+    
     <h2>If you found this helpful, feel free to buy me a coffee by clicking here: </h2><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'M4M818G2N');kofiwidget2.draw();</script>
 
-</div>
+
 
 
 

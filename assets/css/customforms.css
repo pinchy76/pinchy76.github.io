@@ -1,24 +1,4 @@
-@import "assets/css/beautifuljekyll.css";
-
-.button{
-	background: #F05365;
-	border: none;
-	border-radius: 5px;
-	color: #fff;
-	cursor: pointer;/* "hand" cursor */
-	display: block;
-	font-family: inherit; 
-	font-size: inherit;
-	font-weight: 600;
-	margin-bottom: 1rem;
-	outline: none;
-	padding: 1rem 50px;
-	position: relative;
-	transition: all 0.3s;
-	height:auto;
-	
-}
-.button:hover{background:#ED3147}
+@import "beautifuljekyll.css";
 
 /* Input Type = filePicker */
 
@@ -26,7 +6,7 @@
 	height: 0.1px;
 	overflow: hidden;
 	opacity: 0;
-	width: 0.1px;
+	width: 100%
 	position: absolute;
 	z-index: -1;
   }
@@ -60,9 +40,6 @@
 
 [type="file"] + label :hover{background:#CB52FF}
 
-
-
-
 textarea { 
 	white-space: pre;
 	background: #eaeaea;;
@@ -70,8 +47,6 @@ textarea {
 	font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 	font-size: inherit; 
 	width: 100%
-	@media only screen and (max-width: 640px) {
-		width: 100%;
 	}
 }
 
