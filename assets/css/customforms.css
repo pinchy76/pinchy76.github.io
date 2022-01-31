@@ -6,7 +6,7 @@
 	height: 0.1px;
 	overflow: hidden;
 	opacity: 0;
-	width: 100%
+	width: 100%;
 	position: absolute;
 	z-index: -1;
   }
@@ -71,7 +71,7 @@ textarea {
 	font-size: inherit; 
 	width: 100%
 	}
-}
+
 
 table {
 	width: 100%;
