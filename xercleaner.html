@@ -37,10 +37,10 @@ title: XER Cleaner
                     <input type="radio" name="junkOption" id="junk_Option1" value="Ignore">
                     <label for="junk_Option1">Ignore</label>
                 
-                    <input type="radio" name="junkOption" id="junk_Option2" value="Tag" checked>
+                    <input type="radio" name="junkOption" id="junk_Option2" value="Tag" disabled>
                     <label for="junk_Option2">Tag</label>
                 
-                    <input type="radio" name="junkOption" id="junk_Option3" value="Remove">
+                    <input type="radio" name="junkOption" id="junk_Option3" value="Remove" checked>
                     <label for="junk_Option3">Remove</label>
                 </div>
             </td>
@@ -54,28 +54,45 @@ title: XER Cleaner
                     <input type="radio" name="udfOption" id="udf_Option1" value="Ignore">
                     <label for="udf_Option1">Ignore</label>
                 
-                    <input type="radio" name="udfOption" id="udf_Option2" value="Tag" checked>
+                    <input type="radio" name="udfOption" id="udf_Option2" value="Tag" disabled>
                     <label for="udf_Option2">Tag</label>
                 
-                    <input type="radio" name="udfOption" id="udf_Option3" value="Remove">
+                    <input type="radio" name="udfOption" id="udf_Option3" value="Remove" checked>
                     <label for="udf_Option3">Remove</label>
                 </div>
             </td>
         </tr>
         <tr>
             <td>
-                Activity Codes
+                Clear non-essential tables?
             </td>
             <td width="75%">
                 <div class="toggle-radio" data-style="rounded">
-                    <input type="radio" name="actCodeOption" id="act_Option1" value="Ignore">
-                    <label for="act_Option1">Ignore</label>
+                    <input type="radio" name="nonCodeOption" id="non_Option1" value="Ignore">
+                    <label for="non_Option1">Ignore</label>
                 
-                    <input type="radio" name="actCodeOption" id="act_Option2" value="Tag" checked>
-                    <label for="act_Option2">Tag</label>
+                    <input type="radio" name="nonCodeOption" id="non_Option2" value="Tag" disabled>
+                    <label for="non_Option2">Tag</label>
                 
-                    <input type="radio" name="actCodeOption" id="act_Option3" value="Remove">
-                    <label for="act_Option3">Remove</label>
+                    <input type="radio" name="nonCodeOption" id="non_Option3" value="Remove" checked>
+                    <label for="non_Option3">Remove</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Tag essential tables? Calendars, Roles, Resources, Activity Codes
+            </td>
+            <td width="75%">
+                <div class="toggle-radio" data-style="rounded">
+                    <input type="radio" name="taggingOption" id="taggingOption1" value="Ignore">
+                    <label for="taggingOption1">Ignore</label>
+                
+                    <input type="radio" name="taggingOption" id="taggingOption2" value="Tag" checked>
+                    <label for="taggingOption2">Tag</label>
+                
+                    <input type="radio" name="taggingOption" id="taggingOption3" value="Remove" disabled>
+                    <label for="taggingOption3">Remove</label>
                 </div>
             </td>
         </tr>

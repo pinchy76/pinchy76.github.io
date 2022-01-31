@@ -32,13 +32,8 @@
 	height:auto;
 	}
 
-[type="file"] + label.inputfile:focus + label {
-		outline: 1px dotted #000;
-		outline: -webkit-focus-ring-color auto 5px;
-		}
-	
-
-[type="file"] + label :hover{background:#CB52FF}
+	[type="file"] + label:hover
+			{background:#CB52FF}
 
 button {
 	overflow: hidden;
@@ -61,6 +56,10 @@ button {
 	transition: all 0.3s;
 	height:auto;
 	}
+
+	button:hover 
+		{background:#CB52FF}
+	  
 
 
 textarea { 
