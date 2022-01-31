@@ -19,10 +19,11 @@
       document.getElementById("inputTextToSave").value
     );
     
-    const blnChkClearJunk = document.getElementById("chk-Clear-Junk").value;
-    
+    //const optChkClearJunk = document.getElementById("junk_Option3").value;
+    const optChkClearJunk = document.querySelector('input[name="junkOption"]:checked').value;
+
     //if clear junk is checked, wipe the tables in the array
-    if (blnChkClearJunk){
+    if (optChkClearJunk == "Remove"){
       const arrJunkTablesToClear = [`POBS`, `RISKTYPES`];
 
       for (let i = 0; i < arrJunkTablesToClear.length; i++)
@@ -32,8 +33,10 @@
     }
     
     //if clear UDF is checked, wipe the tables in the array
-    const blnChkClearUDF = document.getElementById("chk-Clear-UDF").value;
-    if (blnChkClearUDF){
+    //const optChkClearUDF = document.getElementById("udf_Option3").value;
+    const optChkClearUDF = document.querySelector('input[name="udfOption"]:checked').value;
+
+    if (optChkClearUDF  == "Tag"){
       const arrUDFTablesToClear = [`UDFVALUE`, `UDFTYPE`];
 
       for (let i = 0; i < arrUDFTablesToClear.length; i++)
@@ -43,8 +46,10 @@
     }
     
     //if clear other tables is checked, wipe the tables in the array
-    const blnChkClearOther = document.getElementById("chk-Clear-Other").value;
-    if (blnChkClearOther){
+    //const ChkClearOther = document.getElementById("chk-Clear-Other").value;
+    const optChkClearAct = document.querySelector('input[name="actCodeOption"]:checked').value;
+
+    if (optChkClearAct == "Remove"){
       const arrOtherTablesToClear = [
         `APPLYACTOPTIONS`,
         `DOCCATG`,
@@ -74,7 +79,7 @@
     }
 
     //if Tag Tables is checked, add the tag
-    const blnTagTables = document.getElementById("chk-Tag-Tables").value;
+    const blnTagTables = document.getElementById("act_Option2").value;
     if(blnTagTables){
       const strTagValue = document.getElementById("inputTagValue").value;
       const arrTagTables = [

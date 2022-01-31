@@ -79,6 +79,7 @@ table {
 	border-collapse: collapse;
 	font-size: 13px;
 	line-height: 1.5em;
+	padding: 10px 15px;
 }
 
 th,td {
