@@ -47,7 +47,7 @@
     
     //if clear other tables is checked, wipe the tables in the array
     //These tables are non-essential for successfully importing an XER
-    const optChkClearNon = document.querySelector('input[name="nonOption"]:checked').value;
+    const optChkClearNon = document.querySelector('input[name="nonCodeOption"]:checked').value;
 
     if (optChkClearNon == "Remove"){
       const arrOtherTablesToClear = [
@@ -79,9 +79,9 @@
     }
 
     //if Tag Tables is checked, add the tag
-    const optChkClearNon = document.querySelector('input[name="taggingOption"]:checked').value;
+    const optChkClearTag = document.querySelector('input[name="taggingOption"]:checked').value;
 
-    if(optChkClearNon == "Tag"){
+    if(optChkClearTag == "Tag"){
       const strTagValue = document.getElementById("inputTagValue").value;
       const arrTagTables = [
         [`CALENDAR`, `clndr_name`],
