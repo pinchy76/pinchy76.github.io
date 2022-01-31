@@ -79,35 +79,27 @@ title: XER Cleaner
                 </div>
             </td>
         </tr>
-    </table>
-</div>
-    <table class="control-panel">
         <tr class="control-panel-element" >
             <td>Add tag to table fields?</td>
             <td><input id="inputTagValue"></input></td>
-            <td><input type="checkbox" name="addTags" checked="checked" id="chk-Tag-Tables"></input></td>
-        </tr>
-        <tr class="control-panel-element" >
-            <td>Filename to Save As:</td>
-            <td><input id="inputFileNameToSaveAs"></input></td>
-            <td><button onclick="loadFileAsText()">Save Text to File</button></td>
-        </tr>
-        <tr class="control-panel-element" >
-            <td>Print loaded text</td>
-            <td></td>
-            <td><button onclick="xerParser()">Run Parsr</button><td>
-        </tr>
-        <tr class="control-panel-element" >
-            <td>Filename to Save As:</td>
-            <td><input id="inputFileNameToSaveAs"></input></td>
-            <td><button onclick="saveTextAsFile()">Save Text to File</button></td>
-        </tr>
-        <tr class="control-panel-element" >
-            <td>Print loaded text</td>
-            <td></td>
-            <td><button onclick="xerParser()">Console log loaded text</button><td>
         </tr>
     </table>
+
+    <div>
+        <button onclick="xerParser()">Run XER Cleaner</button>
+    </div>
+    <div>
+        <table class="control-panel">
+            <tr class="control-panel-element" >
+                <td>Filename to Save As:</td>
+                <td><input id="inputFileNameToSaveAs"></input></td>
+            </tr>
+        </table>
+        <div>
+            <button onclick="saveTextAsFile()">Save Text to File</button>
+        </div>
+    </div>
+</div>
     
     <h2>If you found this helpful, feel free to buy me a coffee by clicking here: </h2><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'M4M818G2N');kofiwidget2.draw();</script>
 

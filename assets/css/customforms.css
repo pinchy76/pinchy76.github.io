@@ -40,6 +40,29 @@
 
 [type="file"] + label :hover{background:#CB52FF}
 
+button {
+	overflow: hidden;
+	width: 100%;
+	text-align: center;
+	background: #F05365;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;/* "hand" cursor */
+	display: block;
+	  font-family: inherit; 
+	  font-size: inherit;
+	align-content: middle;
+	font-weight: 600;
+	margin-bottom: 1rem;
+	outline: none;
+	padding: 1rem 50px;
+	position: relative;
+	transition: all 0.3s;
+	height:auto;
+	}
+
+
 textarea { 
 	white-space: pre;
 	background: #eaeaea;;
