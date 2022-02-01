@@ -218,6 +218,7 @@ date_format: "%B %-d, %Y"
 exclude:
   #- tmp/
   #- vendor
+   - vendor/bundle
   #- vendor/bundle/
   #- vendor/cache/
   #- vendor/gems/
