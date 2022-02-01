@@ -1,0 +1,134 @@
+@import "beautifuljekyll.css";
+
+/* Input Type = filePicker */
+
+[type="file"] {
+	height: 0.1px;
+	overflow: hidden;
+	opacity: 0;
+	width: 100%;
+	position: absolute;
+	z-index: -1;
+  }
+  
+[type="file"] + label {
+	
+	text-align: center;
+	background: #F05365;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;/* "hand" cursor */
+	display: block;
+	  font-family: inherit; 
+	  font-size: inherit;
+	align-content: middle;
+	font-weight: 600;
+	margin-bottom: 1rem;
+	outline: none;
+	padding: 1rem 50px;
+	position: relative;
+	transition: all 0.3s;
+	height:auto;
+	}
+
+	[type="file"] + label:hover
+			{background:#CB52FF}
+
+button {
+	overflow: hidden;
+	width: 100%;
+	text-align: center;
+	background: #F05365;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;/* "hand" cursor */
+	display: block;
+	  font-family: inherit; 
+	  font-size: inherit;
+	align-content: middle;
+	font-weight: 600;
+	margin-bottom: 1rem;
+	outline: none;
+	padding: 1rem 50px;
+	position: relative;
+	transition: all 0.3s;
+	height:auto;
+	}
+
+	button:hover 
+		{background:#CB52FF}
+	  
+
+
+textarea { 
+	white-space: pre;
+	background: #eaeaea;;
+	outline: none;
+	font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
+	font-size: inherit; 
+	width: 100%
+	}
+
+
+table {
+	width: 100%;
+	margin: 40px 0;
+	border-collapse: collapse;
+	font-size: 13px;
+	line-height: 1.5em;
+	padding: 10px 15px;
+}
+
+th,td {
+	text-align: left;
+	padding-right: 20px;
+	vertical-align: top;
+}
+
+table td,td {
+	border-spacing: none;
+	border-style: solid;
+	padding: 10px 15px;
+	border-width: 10 0 0 0;
+}
+
+tr:nth-child(odd)>td {
+	background: #fcfcfc;
+}
+
+thead th,th {
+	text-align: left;
+	padding: 10px 15px;
+	height: 20px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #444;
+	cursor: default;
+	white-space: nowrap;
+}
+
+.control-panel{
+	padding: 20px 40px 20px 40px;
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	background: #fff;
+	border-bottom-color: #000;
+	border-bottom-width: 10px ;
+}
+
+.control-panel-element{
+	padding: 60px 100px 60px 100px;
+	max-width: 600px;
+	height: 30px;
+	margin: 0 auto;
+	background: #fff;
+}
+
+img {
+	width: 100%;
+	max-width: 100%;
+	border-radius: 3px;
+}
