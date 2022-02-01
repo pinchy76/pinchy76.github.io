@@ -2,7 +2,6 @@
 layout: page
 title: About me
 subtitle: Welcome to my personal website.
-published: false
 
 ---
 Hi
