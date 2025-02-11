@@ -19,4 +19,4 @@ jobs:
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future"
       env:
-        PAGES_REPO_NWO: pinchy76/pinchy76.github.io
+        PAGES_REPO_NWO: ${{ github.repository }}
