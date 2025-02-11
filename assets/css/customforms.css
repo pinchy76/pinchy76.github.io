@@ -1,264 +1,144 @@
-@import "beautifuljekyll.css";
+@import "beautifuljekyll.css";  /* Inherit base fonts, colours, and styles from BeautifulJekyll */
 
-/* Input Type = filePicker */
+/* ==========================================================================
+   File Input Styles
+   ========================================================================== */
+.inputfile {
+  height: 0.1px;
+  overflow: hidden;
+  opacity: 0;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+}
 
-[type="file"] {
-	height: 0.1px;
-	overflow: hidden;
-	opacity: 0;
-	width: 100%;
-	position: absolute;
-	z-index: -1;
-  }
-  
-[type="file"] + label {
-	
-	text-align: center;
-	background: #F05365;
-	border: none;
-	border-radius: 5px;
-	color: #fff;
-	cursor: pointer;/* "hand" cursor */
-	display: block;
-	  font-family: inherit; 
-	  font-size: inherit;
-	align-content: middle;
-	font-weight: 600;
-	margin-bottom: 1rem;
-	outline: none;
-	padding: 1rem 50px;
-	position: relative;
-	transition: all 0.3s;
-	height:auto;
-	}
+.inputfile + label {
+  text-align: center;
+  background: {{ site.link-col | default: "#008AFF" }};
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  outline: none;
+  padding: 1rem 50px;
+  transition: all 0.3s;
+}
 
-	[type="file"] + label:hover
-			{background:#CB52FF}
+.inputfile + label:hover {
+  background: {{ site.hover-col | default: "#0085A1" }};
+}
 
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
 button {
-	overflow: hidden;
-	width: 100%;
-	text-align: center;
-	background: #F05365;
-	border: none;
-	border-radius: 5px;
-	color: #fff;
-	cursor: pointer;/* "hand" cursor */
-	display: block;
-	  font-family: inherit; 
-	  font-size: inherit;
-	align-content: middle;
-	font-weight: 600;
-	margin-bottom: 1rem;
-	outline: none;
-	padding: 1rem 50px;
-	position: relative;
-	transition: all 0.3s;
-	height:auto;
-	}
+  width: 100%;
+  background: {{ site.link-col | default: "#008AFF" }};
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  outline: none;
+  padding: 1rem 50px;
+  transition: all 0.3s;
+}
 
-	button:hover 
-		{background:#CB52FF}
-	  
+button:hover {
+  background: {{ site.hover-col | default: "#0085A1" }};
+}
 
+/* ==========================================================================
+   Textarea Styles
+   ========================================================================== */
+.Text_AREA {
+  white-space: pre;
+  background: #eaeaea;
+  outline: none;
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
 
-textarea { 
-	white-space: pre;
-	background: #eaeaea;;
-	outline: none;
-	font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
-	font-size: inherit; 
-	width: 100%
-	}
-
-
+/* ==========================================================================
+   Table & Control Panel Styles
+   ========================================================================== */
 table {
-	width: 100%;
-	margin: 40px 0;
-	border-collapse: collapse;
-	font-size: 13px;
-	line-height: 1.5em;
-	padding: 10px 15px;
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.5em;
 }
 
-th,td {
-	text-align: left;
-	padding-right: 20px;
-	vertical-align: top;
+th,
+td {
+  text-align: left;
+  padding: 10px 15px;
 }
 
-table td,td {
-	border-spacing: none;
-	border-style: solid;
-	padding: 10px 15px;
-	border-width: 10 0 0 0;
+/* Use a unified container for control panels if needed */
+.control-panel,
+.control-panel-element {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px 40px;
 }
 
-tr:nth-child(odd)>td {
-	background: #fcfcfc;
+/* ==========================================================================
+   Application (Card-Based) Styles
+   ========================================================================== */
+
+/* Container for the whole application interface */
+.app-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
 }
 
-thead th,th {
-	text-align: left;
-	padding: 10px 15px;
-	height: 20px;
-	font-size: 13px;
-	font-weight: bold;
-	color: #444;
-	cursor: default;
-	white-space: nowrap;
+/* Card styling to mimic a Windows-like window */
+.card {
+  background: {{ site.page-col | default: "#FFFFFF" }};
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 
-.control-panel{
-	padding: 20px 40px 20px 40px;
-	width: 100%;
-	max-width: 600px;
-	margin: 0 auto;
-	background: #fff;
-	border-bottom-color: #000;
-	border-bottom-width: 10px ;
+.card-header {
+  background: {{ site.link-col | default: "#008AFF" }};
+  color: #fff;
+  padding: 10px 15px;
+  font-size: 1.25em;
+  font-weight: bold;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
-.control-panel-element{
-	padding: 60px 100px 60px 100px;
-	max-width: 600px;
-	height: 30px;
-	margin: 0 auto;
-	background: #fff;
+.card-body {
+  padding: 15px;
 }
 
+/* ==========================================================================
+   Image Styles
+   ========================================================================== */
 img {
-	width: 100%;
-	max-width: 100%;
-	border-radius: 3px;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 3px;
 }
-
-/* Base Styles for a Windows-like Minimalist Application */
-body {
-	margin: 0;
-	padding: 0;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	background-color: #f0f2f5;
-	color: #333;
-  }
-  
-  /* Centered Application Container */
-  .app-container {
-	max-width: 800px;
-	margin: 30px auto;
-	padding: 20px;
-  }
-  
-  /* Card (Window) Styles */
-  .card {
-	background: #fff;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-	margin-bottom: 20px;
-	overflow: hidden;
-  }
-  
-  .card-header {
-	background: #0078D7; /* Windows blue accent */
-	color: #fff;
-	padding: 10px 15px;
-	font-size: 1.25em;
-	font-weight: bold;
-	/* Mimic a window title bar */
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-  }
-  
-  .card-body {
-	padding: 15px;
-  }
-  
-  /* File Input Styling (inherits from your original styles) */
-  .inputfile {
-	height: 0.1px;
-	overflow: hidden;
-	opacity: 0;
-	width: 100%;
-	position: absolute;
-	z-index: -1;
-  }
-  
-  .inputfile + label {
-	text-align: center;
-	background: #0078D7;
-	border: none;
-	border-radius: 5px;
-	color: #fff;
-	cursor: pointer;
-	display: block;
-	font-family: inherit;
-	font-size: inherit;
-	font-weight: 600;
-	margin-bottom: 1rem;
-	outline: none;
-	padding: 1rem 50px;
-	transition: all 0.3s;
-  }
-  
-  .inputfile + label:hover {
-	background: #005a9e;
-  }
-  
-  /* Button Styles */
-  button {
-	width: 100%;
-	background: #0078D7;
-	border: none;
-	border-radius: 5px;
-	color: #fff;
-	cursor: pointer;
-	display: block;
-	font-family: inherit;
-	font-size: inherit;
-	font-weight: 600;
-	margin-bottom: 1rem;
-	outline: none;
-	padding: 1rem 50px;
-	transition: all 0.3s;
-  }
-  
-  button:hover {
-	background: #005a9e;
-  }
-  
-  /* Textarea Styles */
-  .Text_AREA {
-	white-space: pre;
-	background: #eaeaea;
-	outline: none;
-	font-family: "Courier New", Courier, monospace;
-	font-size: inherit;
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 3px;
-  }
-  
-  /* Table & Control Panel Styles */
-  .control-panel,
-  .control-panel-element {
-	width: 100%;
-	margin: 0 auto;
-  }
-  
-  table {
-	width: 100%;
-	margin: 20px 0;
-	border-collapse: collapse;
-	font-size: 13px;
-	line-height: 1.5em;
-  }
-  
-  th, td {
-	text-align: left;
-	padding: 10px 15px;
-  }
-  
-  /* Keep your existing toggle-radio and media queries as needed */
-  /* ... (existing toggle-radios.css remains unchanged) ... */
