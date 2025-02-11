@@ -134,6 +134,18 @@ td {
   padding: 15px;
 }
 
+/* Override the card header to ensure a dark background with white text */
+.card-header {
+	background: #0078D7 !important; /* A strong, dark blue */
+	color: #fff !important;
+  }
+  
+  /* Ensure the card body has a white background with dark text */
+  .card-body {
+	background: #fff !important;
+	color: #333 !important; /* A dark grey for good readability */
+  }
+  
 /* ==========================================================================
    Image Styles
    ========================================================================== */
