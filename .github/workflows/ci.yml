@@ -19,8 +19,8 @@ jobs:
 
       - name: Build Jekyll Site
         env:
-          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # ✅ Authenticate metadata
-          PAGES_REPO_NWO: ${{ github.repository }}  # ✅ Ensure repo name is passed
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.PINCHTOKEN }}  # ✅ Authenticate metadata
+          PAGES_REPO_NWO: pinchy76/pinchy76.github.io  # ✅ Ensure repo name is passed
         run: |
           bundle install
           bundle exec jekyll build --future --trace  # ✅ Enable debugging
