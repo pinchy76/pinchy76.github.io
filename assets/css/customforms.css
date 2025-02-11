@@ -27,13 +27,13 @@
   --color-footer-hover: {{ site.footer-hover-col | default: "#0085A1" }};
 
   /* Application UI Specific Colours (ensuring high contrast) */
-  --app-button-bg: #0078D7;
-  --app-button-hover-bg: #005a9e;
-  --app-input-bg: #0078D7;
-  --app-input-hover-bg: #005a9e;
-  --app-card-header-bg: #0078D7;
+  --app-button-bg: #324376;
+  --app-button-hover-bg: #0085A1;
+  --app-input-bg: #324376;
+  --app-input-hover-bg: #0085A1;
+  --app-card-header-bg: #324376;
   --app-card-header-text: #ffffff;
-  --app-card-body-bg: #ffffff;
+  --app-card-body-bg: #FCEFF9;
   --app-card-body-text: #333333;
 }
 
@@ -181,4 +181,3 @@ img {
 /* ==========================================================================
    Additional custom overrides (if needed) will follow...
    ========================================================================== */
-   
