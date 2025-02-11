@@ -266,3 +266,6 @@ plugins:
   - jekyll-sitemap
 
 repository: pinchy76/pinchy76.github.io
+
+github:
+  disable: true
