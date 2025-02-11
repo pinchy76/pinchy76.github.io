@@ -27,9 +27,15 @@ jobs:
           bundle install
           bundle exec jekyll build --future --trace  # ✅ Enable debugging
 
+      - name: Delete old GitHub Pages artifacts
+        uses: geekyeggo/delete-artifact@v2  # ✅ Deletes previous "github-pages" artifacts
+        with:
+          name: github-pages
+
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v2  # ✅ Uploads for GitHub Pages
         with:
+          name: github-pages
           path: ./_site  # ✅ Ensure correct output directory
 
   deploy:
