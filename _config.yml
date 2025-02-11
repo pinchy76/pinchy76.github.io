@@ -268,4 +268,4 @@ plugins:
 repository: pinchy76/pinchy76.github.io
 
 github:
-  disable: true
+  url: "https://github.com/pinchy76/pinchy76.github.io"

@@ -1,15 +1,26 @@
 name: Beautiful Jekyll CI
+
 on: [push, pull_request]
+
 jobs:
   build:
     name: Build Jekyll
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Build the site in the jekyll/builder container
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # ✅ Use latest version
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"  # ✅ Use Ruby version compatible with Jekyll
+          bundler-cache: true  # ✅ Cache dependencies for faster builds
+
+      - name: Build Jekyll Site
+        env:
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # ✅ Authenticate metadata
+          PAGES_REPO_NWO: ${{ github.repository }}  # ✅ Ensure repo name is passed
         run: |
-          export JEKYLL_VERSION=3.8
-          docker run \
-          -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-          -e PAGES_REPO_NWO=${{ github.repository }} \
-          jekyll/builder:$JEKYLL_VERSION /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future"
+          bundle install
+          bundle exec jekyll build --future --trace  # ✅ Enable debugging
