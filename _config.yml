@@ -87,11 +87,16 @@ baseurl: ""
 exclude:
   - Gemfile
   - Gemfile.lock
-  - node_modules
+  - node_modules/
   - vendor/bundle/
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
+  - .jekyll-cache/      # ✅ Speeds up builds by avoiding cache files
+  - _site/             # ✅ Prevents publishing the local build output
+  - .sass-cache/       # ✅ Prevents SASS caching issues
+  - .DS_Store         # ✅ MacOS hidden file—useless for Jekyll
+  - Thumbs.db         # ✅ Windows hidden file—also useless
   - CHANGELOG.md
   - CNAME
   - LICENSE
