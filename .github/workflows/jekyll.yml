@@ -7,16 +7,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v4  # Use latest version
 
-    - name: Set up GitHub API authentication
-      run: echo "JEKYLL_GITHUB_TOKEN=${{ secrets.PINCHTOKEN }}" >> $GITHUB_ENV
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.1'  # Use a version compatible with GitHub Pages
+        bundler-cache: true  # Caches gems for faster builds
 
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -e JEKYLL_GITHUB_TOKEN=${{ secrets.PINCHTOKEN }} \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future"
+    - name: Build Jekyll Site
+      uses: actions/jekyll-build-pages@v1
+      with:
+        source: .  # Default Jekyll source directory
+        destination: ./_site  # Output directory
       env:
-        PAGES_REPO_NWO: ${{ github.repository }}
+        JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Authentication for metadata plugin
+        PAGES_REPO_NWO: ${{ github.repository }}  # Auto-detect repo
+
+    - name: Upload artifact (optional)
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: ./_site
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
