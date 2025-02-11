@@ -8,9 +8,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
+    - name: Set up GitHub API authentication
+      run: echo "JEKYLL_GITHUB_TOKEN=${{ secrets.PINCHTOKEN }}" >> $GITHUB_ENV
+
     - name: Build the site in the jekyll/builder container
       run: |
         docker run \
+        -e JEKYLL_GITHUB_TOKEN=${{ secrets.PINCHTOKEN }} \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future"
       env:
