@@ -2,4 +2,5 @@
 
 source "https://rubygems.org"
 
-gemspec
+# Jekyll and plugins required by GitHub Pages
+gem "github-pages", group: :jekyll_plugins
