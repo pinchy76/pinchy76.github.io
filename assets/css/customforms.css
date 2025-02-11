@@ -1,7 +1,44 @@
-@import "beautifuljekyll.css";  /* Inherit base fonts, colours, and styles from BeautifulJekyll */
+@import "beautifuljekyll.css";  /* Inherit base styles from BeautifulJekyll */
 
 /* ==========================================================================
-   File Input Styles
+   CSS VARIABLES
+   ========================================================================== */
+:root {
+  /* Font Variables */
+  --font-body: 'Playfair Display', 'Times New Roman', serif;
+  --font-heading: 'Libre Franklin', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-nav: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-code: "Courier New", Courier, monospace;
+  --font-post-meta: 'Lora', 'Times New Roman', serif;
+
+  /* Colour Variables (using Liquid for defaults) */
+  --color-text: {{ site.text-col | default: "#404040" }};
+  --color-page: {{ site.page-col | default: "#FFFFFF" }};
+  --color-link: {{ site.link-col | default: "#008AFF" }};
+  --color-hover: {{ site.hover-col | default: "#0085A1" }};
+
+  --color-navbar: {{ site.navbar-col | default: "#EAEAEA" }};
+  --color-navbar-border: {{ site.navbar-border-col | default: "#DDDDDD" }};
+  --color-navbar-text: {{ site.navbar-text-col | default: "#404040" }};
+
+  --color-footer: {{ site.footer-col | default: "#EAEAEA" }};
+  --color-footer-text: {{ site.footer-text-col | default: "#777777" }};
+  --color-footer-link: {{ site.footer-link-col | default: "#404040" }};
+  --color-footer-hover: {{ site.footer-hover-col | default: "#0085A1" }};
+
+  /* Application UI Specific Colours (ensuring high contrast) */
+  --app-button-bg: #0078D7;
+  --app-button-hover-bg: #005a9e;
+  --app-input-bg: #0078D7;
+  --app-input-hover-bg: #005a9e;
+  --app-card-header-bg: #0078D7;
+  --app-card-header-text: #ffffff;
+  --app-card-body-bg: #ffffff;
+  --app-card-body-text: #333333;
+}
+
+/* ==========================================================================
+   FILE INPUT STYLES
    ========================================================================== */
 .inputfile {
   height: 0.1px;
@@ -14,7 +51,7 @@
 
 .inputfile + label {
   text-align: center;
-  background: {{ site.link-col | default: "#008AFF" }};
+  background: var(--app-input-bg);
   border: none;
   border-radius: 5px;
   color: #fff;
@@ -30,15 +67,15 @@
 }
 
 .inputfile + label:hover {
-  background: {{ site.hover-col | default: "#0085A1" }};
+  background: var(--app-input-hover-bg);
 }
 
 /* ==========================================================================
-   Button Styles
+   BUTTON STYLES
    ========================================================================== */
 button {
   width: 100%;
-  background: {{ site.link-col | default: "#008AFF" }};
+  background: var(--app-button-bg);
   border: none;
   border-radius: 5px;
   color: #fff;
@@ -54,17 +91,17 @@ button {
 }
 
 button:hover {
-  background: {{ site.hover-col | default: "#0085A1" }};
+  background: var(--app-button-hover-bg);
 }
 
 /* ==========================================================================
-   Textarea Styles
+   TEXTAREA STYLES
    ========================================================================== */
 .Text_AREA {
   white-space: pre;
   background: #eaeaea;
   outline: none;
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--font-code);
   font-size: inherit;
   width: 100%;
   padding: 10px;
@@ -73,7 +110,7 @@ button:hover {
 }
 
 /* ==========================================================================
-   Table & Control Panel Styles
+   TABLE & CONTROL PANEL STYLES
    ========================================================================== */
 table {
   width: 100%;
@@ -89,40 +126,36 @@ td {
   padding: 10px 15px;
 }
 
-/* Use a unified container for control panels if needed */
 .control-panel,
 .control-panel-element {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  background: #fff;
+  background: var(--color-page);
   padding: 20px 40px;
 }
 
 /* ==========================================================================
-   Application (Card-Based) Styles
+   APPLICATION (CARD-BASED) STYLES
    ========================================================================== */
-
-/* Container for the whole application interface */
 .app-container {
   max-width: 800px;
   margin: 30px auto;
   padding: 20px;
 }
 
-/* Card styling to mimic a Windows-like window */
 .card {
-  background: {{ site.page-col | default: "#FFFFFF" }};
+  background: var(--app-card-body-bg);
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   margin-bottom: 20px;
   overflow: hidden;
 }
 
 .card-header {
-  background: {{ site.link-col | default: "#008AFF" }};
-  color: #fff;
+  background: var(--app-card-header-bg);
+  color: var(--app-card-header-text);
   padding: 10px 15px;
   font-size: 1.25em;
   font-weight: bold;
@@ -132,25 +165,20 @@ td {
 
 .card-body {
   padding: 15px;
+  background: var(--app-card-body-bg);
+  color: var(--app-card-body-text);
 }
 
-/* Override the card header to ensure a dark background with white text */
-.card-header {
-	background: #0078D7 !important; /* A strong, dark blue */
-	color: #fff !important;
-  }
-  
-  /* Ensure the card body has a white background with dark text */
-  .card-body {
-	background: #fff !important;
-	color: #333 !important; /* A dark grey for good readability */
-  }
-  
 /* ==========================================================================
-   Image Styles
+   IMAGE STYLES
    ========================================================================== */
 img {
   width: 100%;
   max-width: 100%;
   border-radius: 3px;
 }
+
+/* ==========================================================================
+   Additional custom overrides (if needed) will follow...
+   ========================================================================== */
+   
