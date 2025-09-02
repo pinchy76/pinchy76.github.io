@@ -1,0 +1,126 @@
+---
+layout: default
+title: XER Cleaner
+---
+
+<!-- Link to external stylesheets and scripts -->
+<link rel="stylesheet" href="/assets/css/customforms.css">
+<link rel="stylesheet" href="/assets/css/toggle-radios.css">
+<script src="/assets/js/xerCleaner/processXERtextFile.js"></script>
+<script src="/assets/js/xerCleaner/parseXER_main.js"></script>
+
+<!-- New Application Container -->
+<div class="app-container">
+  
+  <!-- Application Header Card -->
+  <div class="card">
+    <div class="card-header">Oracle Primavera P6 XER Cleaner</div>
+    <div class="card-body">
+      <h2>Clean Junk Data from Your XER Files</h2>
+      <p>If you regularly import schedules into Primavera P6 you'll know that a lot of junk data can get pulled into your database. Junk data can slow down your database and clutter your interface. This tool cleans up unwanted tables (like POBS and RISKTYPES) and even lets you tag data from different sources.</p>
+    </div>
+  </div>
+  
+  <!-- File Upload & Preview Card -->
+  <div class="card">
+    <div class="card-header">File Upload & Preview</div>
+    <div class="card-body">
+      <div class="control-panel">
+        <input type="file" accept=".xer,.Xer,.XER" id="filePicker" class="inputfile" onchange="loadFileAsText()">
+        <label for="filePicker" id="click-filepicker">Click here to choose an XER to clean</label>
+        <textarea class="Text_AREA" placeholder="XER will import to here" id="inputTextToSave" rows="10" wrap="off"></textarea>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Options Card -->
+  <div class="card">
+    <div class="card-header">Options</div>
+    <div class="card-body" id="XER-Options">
+      <table class="control-panel-element">
+        <tr>
+          <td>Junk Data Fields (POBS/RISKTYPES)</td>
+          <td width="75%">
+            <div class="toggle-radio" data-style="rounded">
+              <input type="radio" name="junkOption" id="junk_Option1" value="Ignore">
+              <label for="junk_Option1">Ignore</label>
+              <input type="radio" name="junkOption" id="junk_Option2" value="Tag" disabled>
+              <label for="junk_Option2">Tag</label>
+              <input type="radio" name="junkOption" id="junk_Option3" value="Remove" checked>
+              <label for="junk_Option3">Remove</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>User Defined Fields</td>
+          <td width="75%">
+            <div class="toggle-radio" data-style="rounded">
+              <input type="radio" name="udfOption" id="udf_Option1" value="Ignore">
+              <label for="udf_Option1">Ignore</label>
+              <input type="radio" name="udfOption" id="udf_Option2" value="Tag" disabled>
+              <label for="udf_Option2">Tag</label>
+              <input type="radio" name="udfOption" id="udf_Option3" value="Remove" checked>
+              <label for="udf_Option3">Remove</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Clear non-essential tables?</td>
+          <td width="75%">
+            <div class="toggle-radio" data-style="rounded">
+              <input type="radio" name="nonCodeOption" id="non_Option1" value="Ignore">
+              <label for="non_Option1">Ignore</label>
+              <input type="radio" name="nonCodeOption" id="non_Option2" value="Tag" disabled>
+              <label for="non_Option2">Tag</label>
+              <input type="radio" name="nonCodeOption" id="non_Option3" value="Remove" checked>
+              <label for="non_Option3">Remove</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Tag essential tables? (Calendars, Roles, Resources, Activity Codes)</td>
+          <td width="75%">
+            <div class="toggle-radio" data-style="rounded">
+              <input type="radio" name="taggingOption" id="taggingOption1" value="Ignore">
+              <label for="taggingOption1">Ignore</label>
+              <input type="radio" name="taggingOption" id="taggingOption2" value="Tag" checked>
+              <label for="taggingOption2">Tag</label>
+              <input type="radio" name="taggingOption" id="taggingOption3" value="Remove" disabled>
+              <label for="taggingOption3">Remove</label>
+            </div>
+          </td>
+        </tr>
+        <tr class="control-panel-element">
+          <td>Add tag to table fields?</td>
+          <td><input id="inputTagValue" placeholder="Enter tag here"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Actions Card -->
+  <div class="card">
+    <div class="card-header">Actions</div>
+    <div class="card-body">
+      <button onclick="xerParser()">Run XER Cleaner</button>
+      <br>
+      <input id="inputFileNameToSaveAs" placeholder="Filename to Save As">
+      <br>
+      <button onclick="saveTextAsFile()">Save Text to File</button>
+    </div>
+  </div>
+  
+  <!-- Support Card -->
+  <div class="card">
+    <div class="card-header">Support</div>
+    <div class="card-body">
+      <h2>If you found this helpful, feel free to buy me a coffee:</h2>
+      <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script>
+      <script type='text/javascript'>
+        kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'M4M818G2N');
+        kofiwidget2.draw();
+      </script>
+    </div>
+  </div>
+  
+</div>

@@ -1,126 +1,1569 @@
----
-layout: default
-title: XER Cleaner
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ==========================================================================
+    Created by Stephen Pincher and finessed with Claude code.  Feel free to use
+    this tool and adapt to your needs.  Please leave this header in place when sharing.
+    Last commit : 30/06/25
+    ========================================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Stephen Pincher">
+    <title>XER Cleaner - Standalone Tool</title>
+    <style>
+        /* ==========================================================================
+           MOBILE DETECTION & WARNING STYLES
+           ========================================================================== */
+        .mobile-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            z-index: 10000;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
-<!-- Link to external stylesheets and scripts -->
-<link rel="stylesheet" href="/assets/css/customforms.css">
-<link rel="stylesheet" href="/assets/css/toggle-radios.css">
-<script src="/assets/js/xerCleaner/processXERtextFile.js"></script>
-<script src="/assets/js/xerCleaner/parseXER_main.js"></script>
+        .mobile-warning h2 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
 
-<!-- New Application Container -->
-<div class="app-container">
-  
-  <!-- Application Header Card -->
-  <div class="card">
-    <div class="card-header">Oracle Primavera P6 XER Cleaner</div>
-    <div class="card-body">
-      <h2>Clean Junk Data from Your XER Files</h2>
-      <p>If you regularly import schedules into Primavera P6 you'll know that a lot of junk data can get pulled into your database. Junk data can slow down your database and clutter your interface. This tool cleans up unwanted tables (like POBS and RISKTYPES) and even lets you tag data from different sources.</p>
+        .mobile-warning p {
+            max-width: 400px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .mobile-warning button {
+            background: #324376;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Show mobile warning on small screens */
+        @media (max-width: 768px) {
+            .mobile-warning {
+                display: flex;
+            }
+            .main-container {
+                display: none;
+            }
+        }
+
+        /* ==========================================================================
+           CSS VARIABLES & THEME
+           ========================================================================== */
+        :root {
+            /* Font Variables */
+            --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-code: 'Courier New', Courier, monospace;
+
+            /* Color Variables (matching site theme) */
+            --color-navbar: #324376;
+            --color-navbar-text: #FCEFF9;
+            --color-page: #FCEFF9;
+            --color-text: #606D5D;
+            --color-link: #008AFF;
+            --color-hover: #0085A1;
+            --color-footer: #324376;
+
+            /* Application UI Colors */
+            --app-primary: #324376;
+            --app-primary-hover: #0085A1;
+            --app-secondary: #FCEFF9;
+            --app-text: #333333;
+            --app-text-light: #666666;
+            --app-border: #DDDDDD;
+            --app-success: #28a745;
+            --app-warning: #ffc107;
+            --app-danger: #dc3545;
+        }
+
+        /* ==========================================================================
+           GLOBAL STYLES
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-page);
+            color: var(--app-text);
+            line-height: 1.6;
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* ==========================================================================
+           CARD STYLES
+           ========================================================================== */
+        .card {
+            background: white;
+            border: 1px solid var(--app-border);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: var(--app-primary);
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.25em;
+            font-weight: bold;
+            border-bottom: 1px solid var(--app-border);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-body h2 {
+            margin-top: 0;
+            color: var(--app-primary);
+        }
+
+        .card-body p {
+            margin-bottom: 15px;
+            color: var(--app-text-light);
+        }
+
+        /* ==========================================================================
+           HEADER & BRANDING
+           ========================================================================== */
+        .app-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .app-title {
+            color: var(--app-primary);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .app-subtitle {
+            color: var(--app-text-light);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .logo-placeholder {
+            border: 2px dashed var(--app-border);
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            color: var(--app-text-light);
+            border-radius: 5px;
+        }
+
+        /* ==========================================================================
+           FORM STYLES
+           ========================================================================== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--app-text);
+        }
+
+        /* ==========================================================================
+           FILE UPLOAD STYLES
+           ========================================================================== */
+        .file-upload-area {
+            border: 2px dashed var(--app-border);
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--app-primary);
+            background: #f0f8ff;
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--app-primary);
+            background: #e6f3ff;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-upload-icon {
+            font-size: 3em;
+            color: var(--app-text-light);
+            margin-bottom: 15px;
+        }
+
+        .file-upload-text {
+            font-size: 1.1em;
+            color: var(--app-text);
+            margin-bottom: 10px;
+        }
+
+        .file-upload-hint {
+            font-size: 0.9em;
+            color: var(--app-text-light);
+        }
+
+        /* ==========================================================================
+           BUTTON STYLES
+           ========================================================================== */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--app-primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: var(--app-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: var(--app-success);
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-warning {
+            background: var(--app-warning);
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn-block {
+            width: 100%;
+            display: block;
+        }
+
+        /* ==========================================================================
+           PROGRESS BAR STYLES
+           ========================================================================== */
+        .progress-container {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--app-primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--app-text-light);
+            font-size: 0.9em;
+        }
+
+        /* ==========================================================================
+           STATUS MESSAGE STYLES
+           ========================================================================== */
+        .status-message {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* ==========================================================================
+           TEXTAREA STYLES
+           ========================================================================== */
+        .code-preview {
+            width: 100%;
+            min-height: 200px;
+            font-family: var(--font-code);
+            font-size: 12px;
+            border: 1px solid var(--app-border);
+            border-radius: 5px;
+            padding: 15px;
+            background: #f8f9fa;
+            white-space: pre;
+            overflow: auto;
+            resize: vertical;
+        }
+
+        /* ==========================================================================
+           OPTIONS PANEL STYLES
+           ========================================================================== */
+        .options-grid {
+            display: grid;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .option-group {
+            background: #f8f9fa;
+            border: 1px solid var(--app-border);
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .option-group h4 {
+            margin: 0 0 15px 0;
+            color: var(--app-primary);
+            font-size: 1.1em;
+        }
+
+        .option-description {
+            font-size: 0.9em;
+            color: var(--app-text-light);
+            margin-bottom: 15px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-option input[type="radio"] {
+            margin: 0;
+        }
+
+        .radio-option label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .always-removed {
+            background: #e8f5e8;
+            border-color: var(--app-success);
+        }
+
+        .always-removed h4 {
+            color: var(--app-success);
+        }
+
+        .tag-input-group {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .tag-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--app-border);
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 600px) {
+            .main-container {
+                margin: 10px;
+                padding: 10px;
+            }
+            
+            .app-title {
+                font-size: 2em;
+            }
+            
+            .card-body {
+                padding: 15px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Warning Overlay -->
+    <div class="mobile-warning" id="mobileWarning">
+        <h2>⚠️ Desktop Required</h2>
+        <p>This XER Cleaner tool is designed for desktop use only. The file processing capabilities and interface are optimized for larger screens and desktop browsers.</p>
+        <p>Please access this tool from a desktop or laptop computer for the best experience.</p>
+        <button onclick="hideMobileWarning()">Continue Anyway</button>
     </div>
-  </div>
-  
-  <!-- File Upload & Preview Card -->
-  <div class="card">
-    <div class="card-header">File Upload & Preview</div>
-    <div class="card-body">
-      <div class="control-panel">
-        <input type="file" accept=".xer,.Xer,.XER" id="filePicker" class="inputfile" onchange="loadFileAsText()">
-        <label for="filePicker" id="click-filepicker">Click here to choose an XER to clean</label>
-        <textarea class="Text_AREA" placeholder="XER will import to here" id="inputTextToSave" rows="10" wrap="off"></textarea>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Options Card -->
-  <div class="card">
-    <div class="card-header">Options</div>
-    <div class="card-body" id="XER-Options">
-      <table class="control-panel-element">
-        <tr>
-          <td>Junk Data Fields (POBS/RISKTYPES)</td>
-          <td width="75%">
-            <div class="toggle-radio" data-style="rounded">
-              <input type="radio" name="junkOption" id="junk_Option1" value="Ignore">
-              <label for="junk_Option1">Ignore</label>
-              <input type="radio" name="junkOption" id="junk_Option2" value="Tag" disabled>
-              <label for="junk_Option2">Tag</label>
-              <input type="radio" name="junkOption" id="junk_Option3" value="Remove" checked>
-              <label for="junk_Option3">Remove</label>
+
+    <!-- Main Application Container -->
+    <div class="main-container" id="mainContainer">
+        <!-- Application Header -->
+        <div class="app-header">
+            <h1 class="app-title">XER Cleaner</h1>
+            <p class="app-subtitle">Free, Secure, Client-Side XER File Cleaning Tool</p>
+            
+            <!-- Logo Placeholder for Planners -->
+            <div class="logo-placeholder">
+                <strong>Logo Placeholder</strong><br>
+                <small>Planners can add their company logo here by editing this HTML file</small>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>User Defined Fields</td>
-          <td width="75%">
-            <div class="toggle-radio" data-style="rounded">
-              <input type="radio" name="udfOption" id="udf_Option1" value="Ignore">
-              <label for="udf_Option1">Ignore</label>
-              <input type="radio" name="udfOption" id="udf_Option2" value="Tag" disabled>
-              <label for="udf_Option2">Tag</label>
-              <input type="radio" name="udfOption" id="udf_Option3" value="Remove" checked>
-              <label for="udf_Option3">Remove</label>
+        </div>
+
+        <!-- Introduction Card -->
+        <div class="card">
+            <div class="card-header">About This Tool</div>
+            <div class="card-body">
+                <h2>Clean Your XER Files Securely</h2>
+                <p>This tool helps you clean Oracle Primavera P6 XER files before importing them into your database. It removes unwanted data that can slow down your system and clutter your interface.</p>
+                
+                <div style="background: #e6f3ff; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                    <strong>🔒 Complete Privacy:</strong> All processing happens in your browser. Your files never leave your computer or get uploaded anywhere.
+                </div>
+
+                <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                    <strong>💰 Free Alternative:</strong> This tool provides similar functionality to expensive commercial XER cleaners, completely free of charge.
+                </div>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Clear non-essential tables?</td>
-          <td width="75%">
-            <div class="toggle-radio" data-style="rounded">
-              <input type="radio" name="nonCodeOption" id="non_Option1" value="Ignore">
-              <label for="non_Option1">Ignore</label>
-              <input type="radio" name="nonCodeOption" id="non_Option2" value="Tag" disabled>
-              <label for="non_Option2">Tag</label>
-              <input type="radio" name="nonCodeOption" id="non_Option3" value="Remove" checked>
-              <label for="non_Option3">Remove</label>
+        </div>
+
+        <!-- File Upload Card -->
+        <div class="card">
+            <div class="card-header">1. Select Your XER File</div>
+            <div class="card-body">
+                <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('fileInput').click()">
+                    <div class="file-upload-icon">📁</div>
+                    <div class="file-upload-text">Click here to select your XER file</div>
+                    <div class="file-upload-hint">or drag and drop your XER file here</div>
+                    <div class="file-upload-hint">(Maximum file size: 20MB)</div>
+                </div>
+                <input type="file" id="fileInput" class="file-input" accept=".xer,.XER" />
+                
+                <div id="fileInfo" style="display: none; margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                    <strong>Selected File:</strong> <span id="fileName"></span><br>
+                    <strong>File Size:</strong> <span id="fileSize"></span>
+                </div>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Tag essential tables? (Calendars, Roles, Resources, Activity Codes)</td>
-          <td width="75%">
-            <div class="toggle-radio" data-style="rounded">
-              <input type="radio" name="taggingOption" id="taggingOption1" value="Ignore">
-              <label for="taggingOption1">Ignore</label>
-              <input type="radio" name="taggingOption" id="taggingOption2" value="Tag" checked>
-              <label for="taggingOption2">Tag</label>
-              <input type="radio" name="taggingOption" id="taggingOption3" value="Remove" disabled>
-              <label for="taggingOption3">Remove</label>
+        </div>
+
+        <!-- Cleaning Options Card -->
+        <div class="card">
+            <div class="card-header">2. Choose Cleaning Options</div>
+            <div class="card-body">
+                <div class="options-grid">
+                    <!-- Always Removed Options -->
+                    <div class="option-group always-removed">
+                        <h4>✓ POBS & Risk Types (Always Removed)</h4>
+                        <div class="option-description">
+                            These tables contain junk data that significantly slows down database imports. They are automatically removed to optimize your XER file.
+                        </div>
+                    </div>
+
+                    <!-- User Defined Fields -->
+                    <div class="option-group">
+                        <h4>User Defined Fields (UDFs)</h4>
+                        <div class="option-description">
+                            Custom fields that may not be relevant to your organization or could cause conflicts during import.
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="udf_ignore" name="udfOption" value="ignore" checked>
+                                <label for="udf_ignore">Ignore</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="udf_tag" name="udfOption" value="tag">
+                                <label for="udf_tag">Tag</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="udf_remove" name="udfOption" value="remove">
+                                <label for="udf_remove">Remove</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Codes -->
+                    <div class="option-group">
+                        <h4>Activity Codes</h4>
+                        <div class="option-description">
+                            Custom activity classification codes that might conflict with your existing code structure.
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="actcode_ignore" name="activityCodeOption" value="ignore" checked>
+                                <label for="actcode_ignore">Ignore</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="actcode_tag" name="activityCodeOption" value="tag">
+                                <label for="actcode_tag">Tag</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="actcode_remove" name="activityCodeOption" value="remove">
+                                <label for="actcode_remove">Remove</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendars -->
+                    <div class="option-group">
+                        <h4>Calendars</h4>
+                        <div class="option-description">
+                            Work calendars that might not match your organization's working patterns.
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="calendar_ignore" name="calendarOption" value="ignore" checked>
+                                <label for="calendar_ignore">Ignore</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="calendar_tag" name="calendarOption" value="tag">
+                                <label for="calendar_tag">Tag</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="calendar_remove" name="calendarOption" value="remove">
+                                <label for="calendar_remove">Remove</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources -->
+                    <div class="option-group">
+                        <h4>Resources</h4>
+                        <div class="option-description">
+                            Labor and material resources that might not exist in your database or need identification.
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="resource_ignore" name="resourceOption" value="ignore" checked>
+                                <label for="resource_ignore">Ignore</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="resource_tag" name="resourceOption" value="tag">
+                                <label for="resource_tag">Tag</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="resource_remove" name="resourceOption" value="remove">
+                                <label for="resource_remove">Remove</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roles -->
+                    <div class="option-group">
+                        <h4>Roles</h4>
+                        <div class="option-description">
+                            Resource roles and skill definitions that might conflict with your organizational structure.
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="role_ignore" name="roleOption" value="ignore" checked>
+                                <label for="role_ignore">Ignore</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="role_tag" name="roleOption" value="tag">
+                                <label for="role_tag">Tag</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="role_remove" name="roleOption" value="remove">
+                                <label for="role_remove">Remove</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Non-Essential Tables -->
+                    <div class="option-group">
+                        <h4>Non-Essential Tables</h4>
+                        <div class="option-description">
+                            Additional tables (documents, locations, memos, etc.) that are not critical for schedule analysis.
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="nonessential_ignore" name="nonEssentialOption" value="ignore" checked>
+                                <label for="nonessential_ignore">Ignore</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="nonessential_tag" name="nonEssentialOption" value="tag">
+                                <label for="nonessential_tag">Tag</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="nonessential_remove" name="nonEssentialOption" value="remove">
+                                <label for="nonessential_remove">Remove</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tag Input (shown when any option is set to 'tag') -->
+                <div class="tag-input-group" id="tagInputGroup">
+                    <label for="tagInput" class="form-label">Tag Prefix:</label>
+                    <input type="text" id="tagInput" class="tag-input" placeholder="Enter tag prefix (e.g., 'EXT_' or 'CONTRACTOR_')" maxlength="20">
+                    <small style="color: var(--app-text-light); margin-top: 5px; display: block;">
+                        This prefix will be added to tagged items to make them easily identifiable after import.
+                    </small>
+                </div>
             </div>
-          </td>
-        </tr>
-        <tr class="control-panel-element">
-          <td>Add tag to table fields?</td>
-          <td><input id="inputTagValue" placeholder="Enter tag here"></td>
-        </tr>
-      </table>
+        </div>
+
+        <!-- Process Button Card -->
+        <div class="card">
+            <div class="card-header">3. Process Your File</div>
+            <div class="card-body">
+                <button id="processBtn" class="btn btn-block" onclick="processXERFile()" disabled>
+                    🚀 Clean XER File
+                </button>
+                
+                <!-- Progress Bar -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Processing...</div>
+                </div>
+
+                <!-- Status Messages -->
+                <div id="statusMessage" class="status-message"></div>
+            </div>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card" id="resultsCard" style="display: none;">
+            <div class="card-header">4. Download Cleaned File</div>
+            <div class="card-body">
+                <div id="processingResults"></div>
+                
+                <div style="margin: 20px 0;">
+                    <label for="outputFileName" class="form-label">Output Filename:</label>
+                    <input type="text" id="outputFileName" class="tag-input" placeholder="cleaned_file.xer">
+                </div>
+                
+                <button id="downloadBtn" class="btn btn-success btn-block" onclick="downloadCleanedFile()">
+                    📥 Download Cleaned XER File
+                </button>
+                
+                <!-- Preview Area -->
+                <div style="margin-top: 20px;">
+                    <label class="form-label">File Preview (first 50 lines):</label>
+                    <textarea id="filePreview" class="code-preview" readonly></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Footer -->
+        <div class="card">
+            <div class="card-header">ℹ️ How It Works</div>
+            <div class="card-body">
+                <p><strong>This tool is completely secure and private:</strong></p>
+                <ul>
+                    <li>✅ All processing happens locally in your browser</li>
+                    <li>✅ Your XER files never leave your computer</li>
+                    <li>✅ No data is sent to any server or stored anywhere</li>
+                    <li>✅ Works offline once the page is loaded</li>
+                </ul>
+                
+                <p><strong>What gets cleaned:</strong></p>
+                <ul>
+                    <li>🗑️ POBS and RISKTYPES tables (always removed for performance)</li>
+                    <li>🏷️ Optional tagging or removal of UDFs, Activity Codes, Calendars, Resources, and Roles</li>
+                    <li>📦 Non-essential tables like documents, locations, and memos</li>
+                    <li>⚡ File size optimization for faster imports</li>
+                </ul>
+                
+                <p><strong>Why clean XER files:</strong></p>
+                <ul>
+                    <li>🚀 Faster database imports</li>
+                    <li>🛡️ Prevent database pollution from external data</li>
+                    <li>🔍 Make imported data easily identifiable</li>
+                    <li>💾 Reduce storage requirements</li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
-  
-  <!-- Actions Card -->
-  <div class="card">
-    <div class="card-header">Actions</div>
-    <div class="card-body">
-      <button onclick="xerParser()">Run XER Cleaner</button>
-      <br>
-      <input id="inputFileNameToSaveAs" placeholder="Filename to Save As">
-      <br>
-      <button onclick="saveTextAsFile()">Save Text to File</button>
-    </div>
-  </div>
-  
-  <!-- Support Card -->
-  <div class="card">
-    <div class="card-header">Support</div>
-    <div class="card-body">
-      <h2>If you found this helpful, feel free to buy me a coffee:</h2>
-      <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script>
-      <script type='text/javascript'>
-        kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'M4M818G2N');
-        kofiwidget2.draw();
-      </script>
-    </div>
-  </div>
-  
-</div>
+
+    <script>
+        // Global variables for file processing
+        let selectedFile = null;
+        let cleanedFileContent = null;
+        let originalFileName = '';
+
+        // ==========================================================================
+        // MOBILE DETECTION AND WARNING
+        // ==========================================================================
+        
+        /**
+         * Hide the mobile warning overlay
+         * Note: Tool functionality may be limited on mobile devices
+         */
+        function hideMobileWarning() {
+            document.getElementById('mobileWarning').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+        }
+
+        // ==========================================================================
+        // FILE UPLOAD FUNCTIONALITY
+        // ==========================================================================
+        
+        /**
+         * Initialize file upload functionality
+         * Sets up drag-and-drop and file selection handlers
+         */
+        function initializeFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const fileUploadArea = document.getElementById('fileUploadArea');
+            
+            // File input change handler
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop handlers
+            fileUploadArea.addEventListener('dragover', handleDragOver);
+            fileUploadArea.addEventListener('dragleave', handleDragLeave);
+            fileUploadArea.addEventListener('drop', handleFileDrop);
+        }
+
+        /**
+         * Handle file selection from input or drag-and-drop
+         * @param {Event} event - File selection event
+         */
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            processSelectedFile(file);
+        }
+
+        /**
+         * Handle drag over event for file upload area
+         * @param {Event} event - Drag over event
+         */
+        function handleDragOver(event) {
+            event.preventDefault();
+            document.getElementById('fileUploadArea').classList.add('dragover');
+        }
+
+        /**
+         * Handle drag leave event for file upload area
+         * @param {Event} event - Drag leave event  
+         */
+        function handleDragLeave(event) {
+            event.preventDefault();
+            document.getElementById('fileUploadArea').classList.remove('dragover');
+        }
+
+        /**
+         * Handle file drop event
+         * @param {Event} event - File drop event
+         */
+        function handleFileDrop(event) {
+            event.preventDefault();
+            document.getElementById('fileUploadArea').classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                processSelectedFile(files[0]);
+            }
+        }
+
+        /**
+         * Process the selected file and update UI
+         * @param {File} file - Selected file object
+         */
+        function processSelectedFile(file) {
+            // Validate file type
+            if (!file.name.toLowerCase().endsWith('.xer')) {
+                showStatusMessage('Please select a valid XER file.', 'error');
+                return;
+            }
+            
+            // Validate file size (20MB limit)
+            const maxSize = 20 * 1024 * 1024; // 20MB in bytes
+            if (file.size > maxSize) {
+                showStatusMessage('File is too large. Maximum size is 20MB.', 'error');
+                return;
+            }
+            
+            // Store file reference and update UI
+            selectedFile = file;
+            originalFileName = file.name;
+            
+            // Update file info display
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').style.display = 'block';
+            
+            // Enable process button
+            document.getElementById('processBtn').disabled = false;
+            
+            // Generate default output filename
+            const baseName = file.name.replace(/\.xer$/i, '');
+            document.getElementById('outputFileName').value = baseName + '_cleaned.xer';
+            
+            showStatusMessage('File selected successfully. Choose your cleaning options and click "Clean XER File".', 'info');
+        }
+
+        /**
+         * Format file size for display
+         * @param {number} bytes - File size in bytes
+         * @returns {string} Formatted file size string
+         */
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // ==========================================================================
+        // OPTIONS PANEL FUNCTIONALITY  
+        // ==========================================================================
+        
+        /**
+         * Initialize options panel functionality
+         * Sets up radio button handlers and tag input visibility
+         */
+        function initializeOptionsPanel() {
+            // Get all radio buttons
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            
+            // Add change event listeners to all radio buttons
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', updateTagInputVisibility);
+            });
+            
+            // Initial check for tag input visibility
+            updateTagInputVisibility();
+        }
+
+        /**
+         * Update tag input visibility based on selected options
+         * Shows tag input if any option is set to 'tag'
+         */
+        function updateTagInputVisibility() {
+            const tagInputGroup = document.getElementById('tagInputGroup');
+            const radioButtons = document.querySelectorAll('input[type="radio"]:checked');
+            
+            let showTagInput = false;
+            
+            // Check if any selected option has value 'tag'
+            radioButtons.forEach(radio => {
+                if (radio.value === 'tag') {
+                    showTagInput = true;
+                }
+            });
+            
+            // Show/hide tag input group
+            tagInputGroup.style.display = showTagInput ? 'block' : 'none';
+        }
+
+        /**
+         * Get current cleaning options from the form
+         * @returns {Object} Object containing all cleaning options
+         */
+        function getCleaningOptions() {
+            return {
+                // Always remove POBS and RISKTYPES
+                pobs: 'remove',
+                risktypes: 'remove',
+                
+                // User-selected options
+                udf: document.querySelector('input[name="udfOption"]:checked').value,
+                activityCode: document.querySelector('input[name="activityCodeOption"]:checked').value,
+                calendar: document.querySelector('input[name="calendarOption"]:checked').value,
+                resource: document.querySelector('input[name="resourceOption"]:checked').value,
+                role: document.querySelector('input[name="roleOption"]:checked').value,
+                nonEssential: document.querySelector('input[name="nonEssentialOption"]:checked').value,
+                
+                // Tag prefix (if any tagging is selected)
+                tagPrefix: document.getElementById('tagInput').value.trim() || 'EXT'
+            };
+        }
+
+        // ==========================================================================
+        // PROGRESS AND STATUS FUNCTIONALITY
+        // ==========================================================================
+        
+        /**
+         * Show progress bar and update progress
+         * @param {number} percentage - Progress percentage (0-100)
+         * @param {string} text - Progress text to display
+         */
+        function updateProgress(percentage, text) {
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressContainer.style.display = 'block';
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = text;
+        }
+
+        /**
+         * Hide progress bar
+         */
+        function hideProgress() {
+            document.getElementById('progressContainer').style.display = 'none';
+        }
+
+        /**
+         * Show status message to user
+         * @param {string} message - Message to display
+         * @param {string} type - Message type ('success', 'error', 'info')
+         */
+        function showStatusMessage(message, type = 'info') {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = message;
+            statusElement.className = 'status-message status-' + type;
+            statusElement.style.display = 'block';
+            
+            // Auto-hide info messages after 5 seconds
+            if (type === 'info') {
+                setTimeout(() => {
+                    statusElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // ==========================================================================
+        // XER FILE PROCESSING ENGINE
+        // ==========================================================================
+        
+        /**
+         * Main function to process the XER file
+         * This is called when the user clicks the "Clean XER File" button
+         */
+        async function processXERFile() {
+            if (!selectedFile) {
+                showStatusMessage('Please select an XER file first.', 'error');
+                return;
+            }
+            
+            try {
+                // Disable process button during processing
+                document.getElementById('processBtn').disabled = true;
+                
+                // Get cleaning options
+                const options = getCleaningOptions();
+                
+                // Start progress indication
+                updateProgress(0, 'Reading XER file...');
+                
+                // Read file content
+                const fileContent = await readFileContent(selectedFile);
+                updateProgress(20, 'Parsing XER structure...');
+                
+                // Parse XER file into table dictionary
+                const xerData = parseXERContent(fileContent);
+                updateProgress(40, 'Applying cleaning rules...');
+                
+                // Apply cleaning operations
+                const cleanedData = await cleanXERData(xerData, options);
+                updateProgress(80, 'Generating cleaned file...');
+                
+                // Generate final cleaned content
+                cleanedFileContent = generateCleanedXER(cleanedData, fileContent);
+                updateProgress(100, 'Processing complete!');
+                
+                // Show results
+                showProcessingResults(xerData, cleanedData, options);
+                hideProgress();
+                
+                // Enable download
+                document.getElementById('resultsCard').style.display = 'block';
+                
+                showStatusMessage('XER file cleaned successfully! Review the results and download your cleaned file.', 'success');
+                
+            } catch (error) {
+                console.error('Error processing XER file:', error);
+                showStatusMessage('Error processing file: ' + error.message, 'error');
+                hideProgress();
+            } finally {
+                // Re-enable process button
+                document.getElementById('processBtn').disabled = false;
+            }
+        }
+
+        /**
+         * Read file content as text with validation
+         * @param {File} file - File to read
+         * @returns {Promise<string>} File content as string
+         */
+        function readFileContent(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = event => {
+                    const content = event.target.result;
+                    
+                    // Validate XER format
+                    if (!validateXERFormat(content)) {
+                        reject(new Error('Invalid XER file format. Please ensure this is a valid Primavera P6 XER export file.'));
+                        return;
+                    }
+                    
+                    resolve(content);
+                };
+                reader.onerror = error => reject(new Error('Error reading file: ' + error.message));
+                reader.readAsText(file, 'UTF-8');
+            });
+        }
+
+        // Placeholder for initialization - will be implemented in next steps
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFileUpload();
+            initializeOptionsPanel();
+        });
+
+        // ==========================================================================
+        // XER PARSING AND PROCESSING FUNCTIONS
+        // Based on the proven algorithm from parseXER_main.js
+        // ==========================================================================
+        
+        /**
+         * Parse XER file content into a structured format
+         * @param {string} xerContent - Raw XER file content
+         * @returns {Object} Parsed XER data with header and tables
+         */
+        function parseXERContent(xerContent) {
+            try {
+                // Extract header (everything before first %T)
+                const firstTableIndex = xerContent.indexOf('%T');
+                const header = firstTableIndex > 0 ? xerContent.substring(0, firstTableIndex) : '';
+                
+                // Split content by table delimiter
+                const tableDelimiter = '%T';
+                const tableSections = xerContent.split(tableDelimiter);
+                
+                const parsedData = {
+                    header: header,
+                    tables: new Map(),
+                    originalSize: xerContent.length
+                };
+                
+                // Process each table section (skip first empty section)
+                for (let i = 1; i < tableSections.length; i++) {
+                    const section = tableSections[i];
+                    
+                    // Find table name (between start and %F)
+                    const fieldMarkerIndex = section.indexOf('%F');
+                    if (fieldMarkerIndex === -1) continue;
+                    
+                    const tableName = section.substring(0, fieldMarkerIndex).trim();
+                    const tableContent = tableDelimiter + section;
+                    
+                    if (tableName) {
+                        parsedData.tables.set(tableName, tableContent);
+                    }
+                }
+                
+                return parsedData;
+                
+            } catch (error) {
+                throw new Error('Failed to parse XER file: ' + error.message);
+            }
+        }
+
+        /**
+         * Apply cleaning operations to XER data based on user options
+         * @param {Object} xerData - Parsed XER data
+         * @param {Object} options - Cleaning options from user
+         * @returns {Promise<Object>} Cleaned XER data
+         */
+        async function cleanXERData(xerData, options) {
+            const cleanedData = {
+                header: xerData.header,
+                tables: new Map(xerData.tables), // Create copy
+                removedTables: [],
+                taggedTables: [],
+                cleaningStats: {}
+            };
+            
+            // Always remove POBS and RISKTYPES (junk data)
+            const alwaysRemove = ['POBS', 'RISKTYPES'];
+            alwaysRemove.forEach(tableName => {
+                if (cleanedData.tables.has(tableName)) {
+                    cleanedData.tables.delete(tableName);
+                    cleanedData.removedTables.push(tableName);
+                }
+            });
+            
+            // Process UDF tables
+            if (options.udf === 'remove') {
+                const udfTables = ['UDFVALUE', 'UDFTYPE'];
+                udfTables.forEach(tableName => {
+                    if (cleanedData.tables.has(tableName)) {
+                        cleanedData.tables.delete(tableName);
+                        cleanedData.removedTables.push(tableName);
+                    }
+                });
+            } else if (options.udf === 'tag') {
+                // Tag UDF tables (implementation would go here)
+                // For now, we'll just track that they would be tagged
+                const udfTables = ['UDFVALUE', 'UDFTYPE'];
+                udfTables.forEach(tableName => {
+                    if (cleanedData.tables.has(tableName)) {
+                        cleanedData.taggedTables.push(tableName);
+                    }
+                });
+            }
+            
+            // Process Activity Codes
+            if (options.activityCode === 'remove') {
+                const activityTables = ['ACTVTYPE', 'ACTVCODE', 'TASKACTV'];
+                activityTables.forEach(tableName => {
+                    if (cleanedData.tables.has(tableName)) {
+                        cleanedData.tables.delete(tableName);
+                        cleanedData.removedTables.push(tableName);
+                    }
+                });
+            } else if (options.activityCode === 'tag') {
+                const activityTables = ['ACTVTYPE'];
+                activityTables.forEach(tableName => {
+                    if (cleanedData.tables.has(tableName)) {
+                        const taggedContent = tagTableData(
+                            cleanedData.tables.get(tableName), 
+                            'actv_code_type', 
+                            options.tagPrefix
+                        );
+                        cleanedData.tables.set(tableName, taggedContent);
+                        cleanedData.taggedTables.push(tableName);
+                    }
+                });
+            }
+            
+            // Process Calendars
+            if (options.calendar === 'remove') {
+                if (cleanedData.tables.has('CALENDAR')) {
+                    cleanedData.tables.delete('CALENDAR');
+                    cleanedData.removedTables.push('CALENDAR');
+                }
+            } else if (options.calendar === 'tag') {
+                if (cleanedData.tables.has('CALENDAR')) {
+                    const taggedContent = tagTableData(
+                        cleanedData.tables.get('CALENDAR'), 
+                        'clndr_name', 
+                        options.tagPrefix
+                    );
+                    cleanedData.tables.set('CALENDAR', taggedContent);
+                    cleanedData.taggedTables.push('CALENDAR');
+                }
+            }
+            
+            // Process Resources
+            if (options.resource === 'remove') {
+                const resourceTables = ['RSRC', 'RSRCCURVDATA', 'RSRCROLE', 'RCATVAL'];
+                resourceTables.forEach(tableName => {
+                    if (cleanedData.tables.has(tableName)) {
+                        cleanedData.tables.delete(tableName);
+                        cleanedData.removedTables.push(tableName);
+                    }
+                });
+            } else if (options.resource === 'tag') {
+                const resourceTaggingMap = [
+                    ['RSRC', 'rsrc_short_name'],
+                    ['RSRCCURVDATA', 'curv_name'],
+                    ['RSRCROLE', 'rsrc_short_name'],
+                    ['RCATVAL', 'rsrc_catg_short_name']
+                ];
+                
+                resourceTaggingMap.forEach(([tableName, fieldName]) => {
+                    if (cleanedData.tables.has(tableName)) {
+                        const taggedContent = tagTableData(
+                            cleanedData.tables.get(tableName), 
+                            fieldName, 
+                            options.tagPrefix
+                        );
+                        cleanedData.tables.set(tableName, taggedContent);
+                        cleanedData.taggedTables.push(tableName);
+                    }
+                });
+            }
+            
+            // Process Roles
+            if (options.role === 'remove') {
+                if (cleanedData.tables.has('ROLES')) {
+                    cleanedData.tables.delete('ROLES');
+                    cleanedData.removedTables.push('ROLES');
+                }
+            } else if (options.role === 'tag') {
+                if (cleanedData.tables.has('ROLES')) {
+                    const taggedContent = tagTableData(
+                        cleanedData.tables.get('ROLES'), 
+                        'role_short_name', 
+                        options.tagPrefix
+                    );
+                    cleanedData.tables.set('ROLES', taggedContent);
+                    cleanedData.taggedTables.push('ROLES');
+                }
+            }
+            
+            // Process Non-Essential Tables
+            if (options.nonEssential === 'remove') {
+                const nonEssentialTables = [
+                    'APPLYACTOPTIONS', 'DOCCATG', 'DOCUMENT', 'LOCATION', 'MEMOTYPE',
+                    'NONWORK', 'PCATTYPE', 'PCATVAL', 'PHASE', 'PROJTHRS', 'PROJPCAT',
+                    'PROJISSU', 'ROLERATE', 'TASKDOC', 'TASKMEMO', 'TASKNOTE',
+                    'WBSBUDG', 'WBSMEMO', 'WBSSTEP'
+                ];
+                
+                nonEssentialTables.forEach(tableName => {
+                    if (cleanedData.tables.has(tableName)) {
+                        cleanedData.tables.delete(tableName);
+                        cleanedData.removedTables.push(tableName);
+                    }
+                });
+            }
+            
+            // Calculate cleaning statistics
+            cleanedData.cleaningStats = {
+                originalTables: xerData.tables.size,
+                finalTables: cleanedData.tables.size,
+                removedCount: cleanedData.removedTables.length,
+                taggedCount: cleanedData.taggedTables.length
+            };
+            
+            return cleanedData;
+        }
+
+        /**
+         * Tag data in a specific table
+         * Enhanced version of the tagXERTable function with improved quote handling
+         * @param {string} tableData - Raw table data
+         * @param {string} fieldToTag - Field name to tag
+         * @param {string} tagPrefix - Prefix to add
+         * @returns {string} Tagged table data
+         */
+        function tagTableData(tableData, fieldToTag, tagPrefix) {
+            try {
+                const lines = tableData.split('\n');
+                let output = '';
+                
+                // Keep table header and field definition lines unchanged
+                if (lines.length > 0) output += lines[0] + '\n'; // %T line
+                if (lines.length > 1) output += lines[1] + '\n'; // %F line
+                
+                // Parse header to find field index
+                const headerColumns = lines[1] ? parseRowIgnoringTabsInQuotes(lines[1]) : [];
+                const fieldIndex = headerColumns.indexOf(fieldToTag);
+                
+                // Process data rows
+                for (let i = 2; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const columns = parseRowIgnoringTabsInQuotes(line);
+                    
+                    // Apply tag if field exists and has content
+                    if (fieldIndex !== -1 && fieldIndex < columns.length && columns[fieldIndex]) {
+                        columns[fieldIndex] = tagPrefix + '_' + columns[fieldIndex];
+                    }
+                    
+                    output += columns.join('\t') + '\n';
+                }
+                
+                return output;
+                
+            } catch (error) {
+                console.warn('Error tagging table data:', error);
+                return tableData; // Return original data if tagging fails
+            }
+        }
+
+        /**
+         * Parse a tab-delimited row while handling quotes properly
+         * Enhanced version from the original parseXER_main.js
+         * @param {string} row - Row to parse
+         * @returns {Array<string>} Array of field values
+         */
+        function parseRowIgnoringTabsInQuotes(row) {
+            const result = [];
+            let currentField = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < row.length; i++) {
+                const char = row[i];
+                
+                if (char === '"') {
+                    // Handle escaped quotes (double quotes)
+                    if (inQuotes && row[i + 1] === '"') {
+                        currentField += '"';
+                        i++; // Skip next quote
+                    } else {
+                        inQuotes = !inQuotes;
+                        currentField += char;
+                    }
+                } else if (char === '\t') {
+                    if (inQuotes) {
+                        // Replace tab inside quotes with space
+                        currentField += ' ';
+                    } else {
+                        // End of field
+                        result.push(currentField);
+                        currentField = '';
+                    }
+                } else {
+                    currentField += char;
+                }
+            }
+            
+            // Add final field
+            result.push(currentField);
+            return result;
+        }
+
+        /**
+         * Generate the final cleaned XER content
+         * @param {Object} cleanedData - Cleaned data structure
+         * @param {string} originalContent - Original file content for reference
+         * @returns {string} Final XER content ready for download
+         */
+        function generateCleanedXER(cleanedData, originalContent) {
+            let output = cleanedData.header;
+            
+            // Add all remaining tables
+            for (const tableContent of cleanedData.tables.values()) {
+                output += tableContent;
+            }
+            
+            // Ensure file ends with %E
+            if (!output.endsWith('%E')) {
+                output += '%E';
+            }
+            
+            return output;
+        }
+
+        /**
+         * Show processing results to the user
+         * @param {Object} originalData - Original XER data
+         * @param {Object} cleanedData - Cleaned XER data
+         * @param {Object} options - Cleaning options used
+         */
+        function showProcessingResults(originalData, cleanedData, options) {
+            const resultsDiv = document.getElementById('processingResults');
+            
+            const originalSize = new Blob([originalData.header + Array.from(originalData.tables.values()).join('')]).size;
+            const cleanedSize = new Blob([cleanedFileContent]).size;
+            const sizeReduction = ((originalSize - cleanedSize) / originalSize * 100).toFixed(1);
+            
+            resultsDiv.innerHTML = `
+                <div style="background: #d4edda; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                    <h4 style="margin: 0 0 10px 0; color: #155724;">✅ Processing Complete!</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.9em;">
+                        <div>
+                            <strong>Original file size:</strong><br>
+                            ${formatFileSize(originalSize)}
+                        </div>
+                        <div>
+                            <strong>Cleaned file size:</strong><br>
+                            ${formatFileSize(cleanedSize)}
+                        </div>
+                        <div>
+                            <strong>Tables removed:</strong><br>
+                            ${cleanedData.removedTables.length} tables
+                        </div>
+                        <div>
+                            <strong>Size reduction:</strong><br>
+                            ${sizeReduction}% smaller
+                        </div>
+                    </div>
+                </div>
+                
+                ${cleanedData.removedTables.length > 0 ? `
+                <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                    <h5 style="margin: 0 0 10px 0;">🗑️ Removed Tables:</h5>
+                    <div style="font-family: monospace; font-size: 0.85em;">
+                        ${cleanedData.removedTables.join(', ')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${cleanedData.taggedTables.length > 0 ? `
+                <div style="background: #d1ecf1; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                    <h5 style="margin: 0 0 10px 0;">🏷️ Tagged Tables:</h5>
+                    <div style="font-family: monospace; font-size: 0.85em;">
+                        ${cleanedData.taggedTables.join(', ')} (tagged with "${options.tagPrefix}_")
+                    </div>
+                </div>
+                ` : ''}
+            `;
+            
+            // Show preview of cleaned file (first 50 lines)
+            const previewLines = cleanedFileContent.split('\n').slice(0, 50);
+            document.getElementById('filePreview').value = previewLines.join('\n') + 
+                (cleanedFileContent.split('\n').length > 50 ? '\n\n... (truncated for preview)' : '');
+        }
+
+        /**
+         * Download the cleaned file
+         * Creates a blob and triggers download
+         */
+        function downloadCleanedFile() {
+            if (!cleanedFileContent) {
+                showStatusMessage('No cleaned file available. Please process a file first.', 'error');
+                return;
+            }
+            
+            const filename = document.getElementById('outputFileName').value || 'cleaned_file.xer';
+            
+            // Create blob and download
+            const blob = new Blob([cleanedFileContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.style.display = 'none';
+            
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            
+            // Clean up
+            window.URL.revokeObjectURL(url);
+            
+            showStatusMessage('File downloaded successfully!', 'success');
+        }
+
+        // ==========================================================================
+        // ADDITIONAL UTILITY FUNCTIONS
+        // ==========================================================================
+        
+        /**
+         * Validate XER file format
+         * @param {string} content - File content to validate
+         * @returns {boolean} True if valid XER format
+         */
+        function validateXERFormat(content) {
+            // Basic XER format validation
+            const hasTableMarker = content.includes('%T');
+            const hasFieldMarker = content.includes('%F');
+            const hasRowMarker = content.includes('%R');
+            
+            return hasTableMarker && hasFieldMarker && hasRowMarker;
+        }
+
+        /**
+         * Handle any uncaught errors gracefully
+         */
+        window.addEventListener('error', function(event) {
+            console.error('Uncaught error:', event.error);
+            showStatusMessage('An unexpected error occurred. Please try refreshing the page.', 'error');
+        });
+
+        /**
+         * Handle promise rejections
+         */
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled promise rejection:', event.reason);
+            showStatusMessage('An error occurred during processing. Please try again.', 'error');
+        });
+
+        /**
+         * Reset the application to initial state
+         */
+        function resetApplication() {
+            selectedFile = null;
+            cleanedFileContent = null;
+            originalFileName = '';
+            
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('processBtn').disabled = true;
+            document.getElementById('resultsCard').style.display = 'none';
+            document.getElementById('statusMessage').style.display = 'none';
+            hideProgress();
+        }
+
+        /**
+         * Copy text to clipboard (for sharing cleaned content)
+         */
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showStatusMessage('Content copied to clipboard!', 'success');
+            } catch (err) {
+                console.warn('Could not copy to clipboard:', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showStatusMessage('Content copied to clipboard!', 'success');
+            }
+        }
+        
+    </script>
+</body>
+</html>
